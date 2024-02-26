@@ -1,4 +1,6 @@
 using Ecommerce.API.Datalayer.Context;
+using Ecommerce.API.Datalayer.Services.Abstract;
+using Ecommerce.API.Datalayer.Services.Concrete;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.API
@@ -14,8 +16,16 @@ namespace Ecommerce.API
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
             });
+
             builder.Services.AddSwaggerGen();
             builder.Services.AddControllers();
+
+            // Add custom services
+            // Dependency Injection(DI) Container
+            builder.Services.AddTransient<IUserService, UserService>();
+            builder.Services.AddTransient<ICartService, CartService>();
+            builder.Services.AddTransient<ICategoryService, CategoryService>();
+            builder.Services.AddTransient<IProductService, ProductService>();
 
             var app = builder.Build();
 
