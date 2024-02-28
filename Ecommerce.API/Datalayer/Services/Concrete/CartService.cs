@@ -40,5 +40,10 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
             _ecommerceContext.Carts.Remove(entity);
             _ecommerceContext.SaveChanges();
         }
+
+        public void SpecificMethodForCart()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
