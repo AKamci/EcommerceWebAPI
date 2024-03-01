@@ -5,25 +5,18 @@ using Ecommerce.API.Models;
 
 namespace Ecommerce.API.Datalayer.Services.Concrete
 {
-    public class CategoryService : ICategoryService
+    public class CategoryService(EcommerceContext ecommerceContext) : ICategoryService
     {
-        private readonly EcommerceContext _ecommerceContext;
-
-        public CategoryService(EcommerceContext ecommerceContext)
-        {
-            _ecommerceContext = ecommerceContext;
-        }
-
         public Result<Category> GetById(int id)
         {
-            var entity = _ecommerceContext.Categories.Find(id);
+            var entity = ecommerceContext.Categories.Find(id);
 
             return entity is not null ? Result<Category>.Success(entity,"Category found.") : Result<Category>.Failure("Category not found.");
         }
 
         public Result<List<Category>> GetAll()
         {
-            var entities = _ecommerceContext.Categories.ToList();
+            var entities = ecommerceContext.Categories.ToList();
 
             if (entities.Count > 0)
             {
@@ -35,24 +28,24 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
 
         public Result<Category> Add(Category entity)
         {
-            _ecommerceContext.Categories.Add(entity);
-            _ecommerceContext.SaveChanges();
+            ecommerceContext.Categories.Add(entity);
+            ecommerceContext.SaveChanges();
 
             return Result<Category>.Success(entity, "New Category added.");
         }
 
         public Result<Category> Update(Category entity)
         {
-            _ecommerceContext.Categories.Update(entity);
-            _ecommerceContext.SaveChanges();
+            ecommerceContext.Categories.Update(entity);
+            ecommerceContext.SaveChanges();
 
             return Result<Category>.Success(entity, "New Category updated.");
         }
 
         public Result<bool> Delete(Category entity)
         {
-            _ecommerceContext.Categories.Remove(entity);
-            _ecommerceContext.SaveChanges();
+            ecommerceContext.Categories.Remove(entity);
+            ecommerceContext.SaveChanges();
 
             var result = GetById(entity.Id);
 

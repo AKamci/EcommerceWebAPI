@@ -1,58 +1,47 @@
 ﻿using Ecommerce.API.Datalayer.Services.Abstract;
 using Ecommerce.API.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Ecommerce.API.Controllers
+namespace Ecommerce.API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class CategoriesController(ICategoryService categoryService) : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CategoriesController : ControllerBase
+    [HttpGet]
+    [Route("{id:int}")]
+    public IActionResult GetById(int id)
     {
-        private readonly ICategoryService _categoryService;
+        var result = categoryService.GetById(id);
+        return result.IsSuccess ? Ok(result) : NotFound(result);
+    }
 
-        public CategoriesController(ICategoryService categoryService)
-        {
-            _categoryService = categoryService;
-        }
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        var result = categoryService.GetAll();
+        return Ok(result);
+    }
 
-        [HttpGet]
-        [Route("{id:int}")]
-        public IActionResult GetById(int id)
-        {
-            var entity = _categoryService.GetById(id);
-            if (entity is null) return NotFound();
+    [HttpPost]
+    public IActionResult Add(Category category)
+    {
+        var result = categoryService.Add(category);
+        return Ok(result);
+    }
 
-            return Ok(entity);
-        }
+    [HttpPut]
+    public IActionResult Update(Category category)
+    {
+        var result = categoryService.Update(category);
+        return Ok(result);
+    }
 
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var list = _categoryService.GetAll();
-            return Ok(list);
-        }
-
-        [HttpPost]
-        public IActionResult Add(Category category)
-        {
-            _categoryService.Add(category);
-            return Ok($"Category named {category.Name} was created.");
-        }
-
-        [HttpPut]
-        public IActionResult Update(Category category)
-        {
-            _categoryService.Update(category);
-            return Ok($"Category named {category.Name} was updated.");
-        }
-
-        [HttpDelete]
-        public IActionResult Delete(int id)
-        {
-            var entity = _categoryService.GetById(id);
-            _categoryService.Delete(entity);
-            return Ok($"Category named {entity.Name} was created.");
-        }
+    [HttpDelete]
+    public IActionResult Delete(int id)
+    {
+        var entity = categoryService.GetById(id);
+        var result = categoryService.Delete(entity.Value);
+        return result.IsSuccess ? Ok(result) : NotFound(result);
     }
 }

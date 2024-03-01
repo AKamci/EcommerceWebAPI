@@ -5,25 +5,18 @@ using Ecommerce.API.Models;
 
 namespace Ecommerce.API.Datalayer.Services.Concrete
 {
-    public class ProductService : IProductService
+    public class ProductService(EcommerceContext ecommerceContext) : IProductService
     {
-        private readonly EcommerceContext _ecommerceContext;
-
-        public ProductService(EcommerceContext ecommerceContext)
-        {
-            _ecommerceContext = ecommerceContext;
-        }
-
         public Result<Product> GetById(int id)
         {
-            var entity = _ecommerceContext.Products.Find(id);
+            var entity = ecommerceContext.Products.Find(id);
 
             return entity is not null ? Result<Product>.Success(entity,"Product found.") : Result<Product>.Failure("Product not found.");
         }
 
         public Result<List<Product>> GetAll()
         {
-            var entities = _ecommerceContext.Products.ToList();
+            var entities = ecommerceContext.Products.ToList();
 
             if (entities.Count > 0)
             {
@@ -35,24 +28,24 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
 
         public Result<Product> Add(Product entity)
         {
-            _ecommerceContext.Products.Add(entity);
-            _ecommerceContext.SaveChanges();
+            ecommerceContext.Products.Add(entity);
+            ecommerceContext.SaveChanges();
 
             return Result<Product>.Success(entity, "New Product added.");
         }
 
         public Result<Product> Update(Product entity)
         {
-            _ecommerceContext.Products.Update(entity);
-            _ecommerceContext.SaveChanges();
+            ecommerceContext.Products.Update(entity);
+            ecommerceContext.SaveChanges();
 
             return Result<Product>.Success(entity, "New Product updated.");
         }
 
         public Result<bool> Delete(Product entity)
         {
-            _ecommerceContext.Products.Remove(entity);
-            _ecommerceContext.SaveChanges();
+            ecommerceContext.Products.Remove(entity);
+            ecommerceContext.SaveChanges();
 
             var result = GetById(entity.Id);
 

@@ -6,51 +6,42 @@ namespace Ecommerce.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UsersController : ControllerBase
+public class UsersController(IUserService userService) : ControllerBase
 {
-    private readonly IUserService _userService;
-
-    public UsersController(IUserService userService)
-    {
-        _userService = userService;
-    }
-
     [HttpGet]
     [Route("{id:int}")]
     public IActionResult GetById(int id)
     {
-        var entity = _userService.GetById(id);
-        if (entity is null) return NotFound();
-
-        return Ok(entity);
+        var result = userService.GetById(id);
+        return result.IsSuccess ? Ok(result) : NotFound(result);
     }
 
     [HttpGet]
     public IActionResult GetAll()
     {
-        var list = _userService.GetAll();
-        return Ok(list);
+        var result = userService.GetAll();
+        return Ok(result);
     }
 
     [HttpPost]
     public IActionResult Add(User user)
     {
-        _userService.Add(user);
-        return Ok($"The user {user.Name} {user.Surname} is created.");
+        var result = userService.Add(user);
+        return Ok(result);
     }
 
     [HttpPut]
     public IActionResult Update(User user)
     {
-        _userService.Update(user);
-        return Ok($"The user is {user.Name} {user.Surname} updated.");
+        var result = userService.Update(user);
+        return Ok(result);
     }
 
     [HttpDelete]
     public IActionResult Delete(int id)
     {
-        var entity = _userService.GetById(id);
-        _userService.Delete(entity);
-        return Ok($"The user {entity.Name} {entity.Surname} is deleted.");
+        var entity = userService.GetById(id);
+        var result = userService.Delete(entity.Value);
+        return result.IsSuccess ? Ok(result) : NotFound(result);
     }
 }

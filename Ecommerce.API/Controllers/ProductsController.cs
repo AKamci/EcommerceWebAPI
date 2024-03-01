@@ -1,58 +1,47 @@
 ﻿using Ecommerce.API.Datalayer.Services.Abstract;
 using Ecommerce.API.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Ecommerce.API.Controllers
+namespace Ecommerce.API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class ProductsController(IProductService productService) : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProductsController : ControllerBase
+    [HttpGet]
+    [Route("{id:int}")]
+    public IActionResult GetById(int id)
     {
-        private readonly IProductService _productService;
+        var result = productService.GetById(id);
+        return result.IsSuccess ? Ok(result) : NotFound(result);
+    }
 
-        public ProductsController(IProductService productService)
-        {
-            _productService = productService;
-        }
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        var result = productService.GetAll();
+        return Ok(result);
+    }
 
-        [HttpGet]
-        [Route("{id:int}")]
-        public IActionResult GetById(int id)
-        {
-            var entity = _productService.GetById(id);
-            if (entity is null) return NotFound();
+    [HttpPost]
+    public IActionResult Add(Product product)
+    {
+        var result = productService.Add(product);
+        return Ok(result);
+    }
 
-            return Ok(entity);
-        }
+    [HttpPut]
+    public IActionResult Update(Product product)
+    {
+        var result = productService.Update(product);
+        return Ok(result);
+    }
 
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var list = _productService.GetAll();
-            return Ok(list);
-        }
-
-        [HttpPost]
-        public IActionResult Add(Product product)
-        {
-            _productService.Add(product);
-            return Ok($"The product {product.Name} {product.Category} is created.");
-        }
-
-        [HttpPut]
-        public IActionResult Update(Product product)
-        {
-            _productService.Update(product);
-            return Ok($"The product {product.Name} {product.Category} is updated.");
-        }
-
-        [HttpDelete]
-        public IActionResult Delete(int id)
-        {
-            var entity = _productService.GetById(id);
-            _productService.Delete(entity);
-            return Ok($"The product {entity.Name} {entity.Category} is deleted");
-        }
+    [HttpDelete]
+    public IActionResult Delete(int id)
+    {
+        var entity = productService.GetById(id);
+        var result = productService.Delete(entity.Value);
+        return result.IsSuccess ? Ok(result) : NotFound(result);
     }
 }

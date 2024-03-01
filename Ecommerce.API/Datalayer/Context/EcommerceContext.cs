@@ -22,7 +22,7 @@ namespace Ecommerce.API.Datalayer.Context
             modelBuilder.Entity<User>().HasIndex(t => t.Email).IsUnique();
 
             // User Validations
-            modelBuilder.Entity<User>().Property(t => t.Name).HasMaxLength(9);
+            //modelBuilder.Entity<User>().Property(t => t.Name).HasMaxLength(9);
 
             base.OnModelCreating(modelBuilder);
         }

@@ -5,25 +5,18 @@ using Ecommerce.API.Models;
 
 namespace Ecommerce.API.Datalayer.Services.Concrete
 {
-    public class UserService : IUserService
+    public class UserService(EcommerceContext ecommerceContext) : IUserService
     {
-        private readonly EcommerceContext _ecommerceContext;
-
-        public UserService(EcommerceContext ecommerceContext)
-        {
-            _ecommerceContext = ecommerceContext;
-        }
-
         public Result<User> GetById(int id)
         {
-            var entity = _ecommerceContext.Users.Find(id);
+            var entity = ecommerceContext.Users.Find(id);
 
             return entity is not null ? Result<User>.Success(entity,"User found.") : Result<User>.Failure("User not found.");
         }
 
         public Result<List<User>> GetAll()
         {
-            var entities = _ecommerceContext.Users.ToList();
+            var entities = ecommerceContext.Users.ToList();
 
             if (entities.Count > 0)
             {
@@ -35,24 +28,24 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
 
         public Result<User> Add(User entity)
         {
-            _ecommerceContext.Users.Add(entity);
-            _ecommerceContext.SaveChanges();
+            ecommerceContext.Users.Add(entity);
+            ecommerceContext.SaveChanges();
 
             return Result<User>.Success(entity, "New User added.");
         }
 
         public Result<User> Update(User entity)
         {
-            _ecommerceContext.Users.Update(entity);
-            _ecommerceContext.SaveChanges();
+            ecommerceContext.Users.Update(entity);
+            ecommerceContext.SaveChanges();
 
             return Result<User>.Success(entity, "New User updated.");
         }
 
         public Result<bool> Delete(User entity)
         {
-            _ecommerceContext.Users.Remove(entity);
-            _ecommerceContext.SaveChanges();
+            ecommerceContext.Users.Remove(entity);
+            ecommerceContext.SaveChanges();
 
             var result = GetById(entity.Id);
 
