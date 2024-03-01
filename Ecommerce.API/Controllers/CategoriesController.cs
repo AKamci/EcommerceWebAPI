@@ -21,7 +21,7 @@ namespace Ecommerce.API.Controllers
         public IActionResult GetById(int id)
         {
             var entity = _categoryService.GetById(id);
-            if (entity is null) return NotFound(entity);
+            if (entity is null) return NotFound();
 
             return Ok(entity);
         }

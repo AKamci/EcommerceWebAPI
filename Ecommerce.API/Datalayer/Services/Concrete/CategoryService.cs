@@ -1,5 +1,6 @@
 ﻿using Ecommerce.API.Datalayer.Context;
 using Ecommerce.API.Datalayer.Services.Abstract;
+using Ecommerce.API.Infrastructure;
 using Ecommerce.API.Models;
 
 namespace Ecommerce.API.Datalayer.Services.Concrete
@@ -13,32 +14,49 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
             _ecommerceContext = ecommerceContext;
         }
 
-        public Category GetById(int id)
+        public Result<Category> GetById(int id)
         {
-            return _ecommerceContext.Categories.Find(id);
+            var entity = _ecommerceContext.Categories.Find(id);
+
+            return entity is not null ? Result<Category>.Success(entity,"Category found.") : Result<Category>.Failure("Category not found.");
         }
 
-        public List<Category> GetAll()
+        public Result<List<Category>> GetAll()
         {
-            return _ecommerceContext.Categories.ToList();
+            var entities = _ecommerceContext.Categories.ToList();
+
+            if (entities.Count > 0)
+            {
+                return Result<List<Category>>.Success(entities, "Categories found.");
+            }
+
+            return Result<List<Category>>.Failure("Categories not found.");
         }
 
-        public void Add(Category entity)
+        public Result<Category> Add(Category entity)
         {
             _ecommerceContext.Categories.Add(entity);
             _ecommerceContext.SaveChanges();
+
+            return Result<Category>.Success(entity, "New Category added.");
         }
 
-        public void Update(Category entity)
+        public Result<Category> Update(Category entity)
         {
             _ecommerceContext.Categories.Update(entity);
             _ecommerceContext.SaveChanges();
+
+            return Result<Category>.Success(entity, "New Category updated.");
         }
 
-        public void Delete(Category entity)
+        public Result<bool> Delete(Category entity)
         {
             _ecommerceContext.Categories.Remove(entity);
             _ecommerceContext.SaveChanges();
+
+            var result = GetById(entity.Id);
+
+            return result is null ? Result<bool>.Success(true, "Category is deleted.") : Result<bool>.Failure("Category not found.");
         }
     }
 }

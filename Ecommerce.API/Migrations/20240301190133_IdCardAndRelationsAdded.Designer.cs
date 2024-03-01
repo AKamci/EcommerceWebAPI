@@ -4,6 +4,7 @@ using Ecommerce.API.Datalayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommerce.API.Migrations
 {
     [DbContext(typeof(EcommerceContext))]
-    partial class EcommerceContextModelSnapshot : ModelSnapshot
+    [Migration("20240301190133_IdCardAndRelationsAdded")]
+    partial class IdCardAndRelationsAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,7 +86,7 @@ namespace Ecommerce.API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("IdCards");
+                    b.ToTable("UserIdCard");
                 });
 
             modelBuilder.Entity("Ecommerce.API.Models.Product", b =>
@@ -134,9 +137,6 @@ namespace Ecommerce.API.Migrations
                     b.Property<int?>("CartId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("MiddleName")
                         .HasColumnType("nvarchar(max)");
 
@@ -149,10 +149,6 @@ namespace Ecommerce.API.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CartId");
-
-                    b.HasIndex("Email")
-                        .IsUnique()
-                        .HasFilter("[Email] IS NOT NULL");
 
                     b.ToTable("Users");
                 });

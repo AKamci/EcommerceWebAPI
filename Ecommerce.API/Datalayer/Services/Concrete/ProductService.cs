@@ -1,5 +1,6 @@
 ﻿using Ecommerce.API.Datalayer.Context;
 using Ecommerce.API.Datalayer.Services.Abstract;
+using Ecommerce.API.Infrastructure;
 using Ecommerce.API.Models;
 
 namespace Ecommerce.API.Datalayer.Services.Concrete
@@ -13,32 +14,49 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
             _ecommerceContext = ecommerceContext;
         }
 
-        public Product GetById(int id)
+        public Result<Product> GetById(int id)
         {
-            return _ecommerceContext.Products.Find(id);
+            var entity = _ecommerceContext.Products.Find(id);
+
+            return entity is not null ? Result<Product>.Success(entity,"Product found.") : Result<Product>.Failure("Product not found.");
         }
 
-        public List<Product> GetAll()
+        public Result<List<Product>> GetAll()
         {
-            return _ecommerceContext.Products.ToList();
+            var entities = _ecommerceContext.Products.ToList();
+
+            if (entities.Count > 0)
+            {
+                return Result<List<Product>>.Success(entities, "Products found.");
+            }
+
+            return Result<List<Product>>.Failure("Products not found.");
         }
 
-        public void Add(Product entity)
+        public Result<Product> Add(Product entity)
         {
             _ecommerceContext.Products.Add(entity);
             _ecommerceContext.SaveChanges();
+
+            return Result<Product>.Success(entity, "New Product added.");
         }
 
-        public void Update(Product entity)
+        public Result<Product> Update(Product entity)
         {
             _ecommerceContext.Products.Update(entity);
             _ecommerceContext.SaveChanges();
+
+            return Result<Product>.Success(entity, "New Product updated.");
         }
 
-        public void Delete(Product entity)
+        public Result<bool> Delete(Product entity)
         {
             _ecommerceContext.Products.Remove(entity);
             _ecommerceContext.SaveChanges();
+
+            var result = GetById(entity.Id);
+
+            return result is null ? Result<bool>.Success(true, "Product is deleted.") : Result<bool>.Failure("Product not found.");
         }
     }
 }

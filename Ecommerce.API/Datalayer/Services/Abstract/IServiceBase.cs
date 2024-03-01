@@ -1,11 +1,13 @@
-﻿namespace Ecommerce.API.Datalayer.Services.Abstract
+﻿using Ecommerce.API.Infrastructure;
+
+namespace Ecommerce.API.Datalayer.Services.Abstract
 {
     public interface IServiceBase<T>
     {
-        T GetById(int id);
-        List<T> GetAll();
-        void Add(T entity);
-        void Update(T entity);
-        void Delete(T entity);
+        Result<T> GetById(int id);
+        Result<List<T>> GetAll();
+        Result<T> Add(T entity);
+        Result<T> Update(T entity);
+        Result<bool> Delete(T entity);
     }
 }

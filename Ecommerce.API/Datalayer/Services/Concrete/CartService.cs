@@ -1,5 +1,6 @@
 ﻿using Ecommerce.API.Datalayer.Context;
 using Ecommerce.API.Datalayer.Services.Abstract;
+using Ecommerce.API.Infrastructure;
 using Ecommerce.API.Models;
 
 namespace Ecommerce.API.Datalayer.Services.Concrete
@@ -13,37 +14,49 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
             _ecommerceContext = ecommerceContext;
         }
 
-        public Cart GetById(int id)
+        public Result<Cart> GetById(int id)
         {
-            return _ecommerceContext.Carts.Find(id);
+            var entity = _ecommerceContext.Carts.Find(id);
+
+            return entity is not null ? Result<Cart>.Success(entity,"Cart found.") : Result<Cart>.Failure("Cart not found.");
         }
 
-        public List<Cart> GetAll()
+        public Result<List<Cart>> GetAll()
         {
-            return _ecommerceContext.Carts.ToList();
+            var entities = _ecommerceContext.Carts.ToList();
+
+            if (entities.Count > 0)
+            {
+                return Result<List<Cart>>.Success(entities, "Carts found.");
+            }
+
+            return Result<List<Cart>>.Failure("Carts not found.");
         }
 
-        public void Add(Cart entity)
+        public Result<Cart> Add(Cart entity)
         {
             _ecommerceContext.Carts.Add(entity);
             _ecommerceContext.SaveChanges();
+
+            return Result<Cart>.Success(entity, "New Cart added.");
         }
 
-        public void Update(Cart entity)
+        public Result<Cart> Update(Cart entity)
         {
             _ecommerceContext.Carts.Update(entity);
             _ecommerceContext.SaveChanges();
+
+            return Result<Cart>.Success(entity, "New Cart updated.");
         }
 
-        public void Delete(Cart entity)
+        public Result<bool> Delete(Cart entity)
         {
             _ecommerceContext.Carts.Remove(entity);
             _ecommerceContext.SaveChanges();
-        }
 
-        public void SpecificMethodForCart()
-        {
-            throw new NotImplementedException();
+            var result = GetById(entity.Id);
+
+            return result is null ? Result<bool>.Success(true, "Cart is deleted.") : Result<bool>.Failure("Cart not found.");
         }
     }
 }
