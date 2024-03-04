@@ -26,6 +26,7 @@ namespace Ecommerce.API
             builder.Services.AddTransient<ICartService, CartService>();
             builder.Services.AddTransient<ICategoryService, CategoryService>();
             builder.Services.AddTransient<IProductService, ProductService>();
+            builder.Services.AddTransient<IOrderService, OrderService>();
 
             var app = builder.Build();
 
