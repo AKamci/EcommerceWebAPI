@@ -13,7 +13,7 @@ namespace Ecommerce.API.Migrations
             migrationBuilder.AlterColumn<string>(
                 name: "Surname",
                 table: "Users",
-                type: "nvarchar(9)",
+                type: "nvarchar(max)",
                 maxLength: 9,
                 nullable: true,
                 oldClrType: typeof(string),
@@ -23,8 +23,7 @@ namespace Ecommerce.API.Migrations
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
                 table: "Users",
-                type: "nvarchar(9)",
-                maxLength: 9,
+                type: "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)",
@@ -33,8 +32,7 @@ namespace Ecommerce.API.Migrations
             migrationBuilder.AlterColumn<string>(
                 name: "MiddleName",
                 table: "Users",
-                type: "nvarchar(9)",
-                maxLength: 9,
+                type: "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)",

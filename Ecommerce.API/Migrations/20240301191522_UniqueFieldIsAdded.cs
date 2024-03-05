@@ -13,7 +13,7 @@ namespace Ecommerce.API.Migrations
             migrationBuilder.AddColumn<string>(
                 name: "Email",
                 table: "Users",
-                type: "nvarchar(450)",
+                type: "nvarchar(max)",
                 nullable: true);
 
             migrationBuilder.CreateIndex(

@@ -13,7 +13,7 @@ public class CartsController(ICartService cartService) : ControllerBase
     public IActionResult GetById(int id)
     {
         var result = cartService.GetById(id);
-        return result.IsSuccess ? Ok(result) : NotFound(result);
+        return result.IsSuccess ? Ok(result) : NotFound();
     }
 
     [HttpGet]
@@ -42,6 +42,6 @@ public class CartsController(ICartService cartService) : ControllerBase
     {
         var entity = cartService.GetById(id);
         var result = cartService.Delete(entity.Value);
-        return result.IsSuccess ? Ok(result) : NotFound(result);
+        return result.IsSuccess ? Ok(result) : NotFound();
     }
 }

@@ -51,10 +51,5 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
 
             return result is null ? Result<bool>.Success(true, "Order is deleted.") : Result<bool>.Failure("Order not found.");
         }
-
-        Result<Order> IServiceBase<Order>.Update(Order entity)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -14,7 +14,7 @@ namespace Ecommerce.API.Controllers
             public IActionResult GetById(int id)
             {
                 var result = orderService.GetById(id);
-                return result.IsSuccess ? Ok(result) : NotFound(result);
+                return result.IsSuccess ? Ok(result) : NotFound();
             }
 
             [HttpGet]
@@ -43,7 +43,7 @@ namespace Ecommerce.API.Controllers
             {
                 var entity = orderService.GetById(id);
                 var result = orderService.Delete(entity.Value);
-                return result.IsSuccess ? Ok(result) : NotFound(result);
+                return result.IsSuccess ? Ok(result) : NotFound();
             }
         }
 

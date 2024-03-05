@@ -13,7 +13,7 @@ public class UsersController(IUserService userService) : ControllerBase
     public IActionResult GetById(int id)
     {
         var result = userService.GetById(id);
-        return result.IsSuccess ? Ok(result) : NotFound(result);
+        return result.IsSuccess ? Ok(result) : NotFound();
     }
 
     [HttpGet]
@@ -42,6 +42,6 @@ public class UsersController(IUserService userService) : ControllerBase
     {
         var entity = userService.GetById(id);
         var result = userService.Delete(entity.Value);
-        return result.IsSuccess ? Ok(result) : NotFound(result);
+        return result.IsSuccess ? Ok(result) : NotFound();
     }
 }

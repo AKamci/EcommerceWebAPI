@@ -13,7 +13,7 @@ public class ProductsController(IProductService productService) : ControllerBase
     public IActionResult GetById(int id)
     {
         var result = productService.GetById(id);
-        return result.IsSuccess ? Ok(result) : NotFound(result);
+        return result.IsSuccess ? Ok(result) : NotFound();
     }
 
     [HttpGet]
@@ -42,6 +42,6 @@ public class ProductsController(IProductService productService) : ControllerBase
     {
         var entity = productService.GetById(id);
         var result = productService.Delete(entity.Value);
-        return result.IsSuccess ? Ok(result) : NotFound(result);
+        return result.IsSuccess ? Ok(result) : NotFound();
     }
 }

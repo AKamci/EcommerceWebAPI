@@ -13,7 +13,7 @@ namespace Ecommerce.API.Migrations
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
                 table: "Users",
-                type: "nvarchar(450)",
+                type: "nvarchar(max)",
                 maxLength: 9,
                 nullable: true,
                 oldClrType: typeof(string),
@@ -41,7 +41,7 @@ namespace Ecommerce.API.Migrations
                 type: "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(450)",
+                oldType: "nvarchar(max)",
                 oldMaxLength: 9,
                 oldNullable: true);
         }

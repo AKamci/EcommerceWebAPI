@@ -13,7 +13,7 @@ public class CategoriesController(ICategoryService categoryService) : Controller
     public IActionResult GetById(int id)
     {
         var result = categoryService.GetById(id);
-        return result.IsSuccess ? Ok(result) : NotFound(result);
+        return result.IsSuccess ? Ok(result) : NotFound();
     }
 
     [HttpGet]
@@ -42,6 +42,6 @@ public class CategoriesController(ICategoryService categoryService) : Controller
     {
         var entity = categoryService.GetById(id);
         var result = categoryService.Delete(entity.Value);
-        return result.IsSuccess ? Ok(result) : NotFound(result);
+        return result.IsSuccess ? Ok(result) : NotFound();
     }
 }
