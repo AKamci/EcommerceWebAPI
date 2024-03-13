@@ -15,10 +15,10 @@ namespace Ecommerce.API.Datalayer.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // One-to-many relationship
-            modelBuilder.Entity<Category>().HasMany<Product>().WithOne(t => t.Category);
-            modelBuilder.Entity<Cart>().HasMany<Product>();
-            modelBuilder.Entity<Cart>().HasMany<User>();
-            modelBuilder.Entity<Order>().HasMany<Product>();   
+            //modelBuilder.Entity<Category>().HasMany<Product>().WithOne(t => t.Category);
+            //modelBuilder.Entity<Cart>().HasMany<Product>();
+            //modelBuilder.Entity<Cart>().HasMany<User>();
+            //modelBuilder.Entity<Order>().HasMany<Product>();   
             
 
 
