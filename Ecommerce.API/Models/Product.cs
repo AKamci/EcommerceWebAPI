@@ -1,4 +1,6 @@
-﻿namespace Ecommerce.API.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Ecommerce.API.Models
 {
     public class Product
     {
@@ -8,7 +10,7 @@
         public string Description { get; set; }
         public float Price { get; set; }
 
-        // Navigation Properties
+        // [NotMapped]
         public Category Category { get; set; }
     }
 }

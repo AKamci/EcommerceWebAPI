@@ -26,6 +26,8 @@ namespace Ecommerce.API.Datalayer.Context
             modelBuilder.Entity<User>().Property(t => t.Name).HasMaxLength(9);
             modelBuilder.Entity<User>().Property(t =>t.Surname).HasMaxLength(9);
 
+            modelBuilder.Entity<Product>().Ignore(t => t.Category);
+
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -2,6 +2,7 @@
 using Ecommerce.API.Datalayer.Services.Abstract;
 using Ecommerce.API.Infrastructure;
 using Ecommerce.API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.API.Datalayer.Services.Concrete
 {
@@ -16,7 +17,11 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
 
         public Result<List<Product>> GetAll()
         {
-            var entities = ecommerceContext.Products.ToList();
+            // Eager loading is implemented
+            var entities = ecommerceContext
+                .Products
+                .Include(i => i.Category)
+                .ToList();
 
             if (entities.Count > 0)
             {
