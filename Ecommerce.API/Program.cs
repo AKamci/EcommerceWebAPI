@@ -14,7 +14,8 @@ namespace Ecommerce.API
             // Sql Server Connection Settings
             builder.Services.AddDbContext<EcommerceContext>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
+                //options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
+                options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnectionString"));
             });
 
             builder.Services.AddSwaggerGen();

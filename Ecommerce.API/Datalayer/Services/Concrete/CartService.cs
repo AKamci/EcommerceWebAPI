@@ -11,7 +11,7 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
         {
             var entity = ecommerceContext.Carts.Find(id);
 
-            return entity is not null ? Result<Cart>.Success(entity,"Cart found.") : Result<Cart>.Failure("Cart not found.");
+            return entity is not null ? Result<Cart>.Success(entity, Messages.Cart.Found) : Result<Cart>.Failure(Messages.Cart.NotFound);
         }
 
         public Result<List<Cart>> GetAll()
@@ -20,10 +20,10 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
 
             if (entities.Count > 0)
             {
-                return Result<List<Cart>>.Success(entities, "Carts found.");
+                return Result<List<Cart>>.Success(entities, Messages.Cart.Found);
             }
 
-            return Result<List<Cart>>.Failure("Carts not found.");
+            return Result<List<Cart>>.Failure(Messages.Cart.NotFound);
         }
 
         public Result<Cart> Add(Cart entity)
@@ -31,7 +31,7 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
             ecommerceContext.Carts.Add(entity);
             ecommerceContext.SaveChanges();
 
-            return Result<Cart>.Success(entity, "New Cart added.");
+            return Result<Cart>.Success(entity, Messages.Cart.Added);
         }
 
         public Result<Cart> Update(Cart entity)
@@ -39,7 +39,7 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
             ecommerceContext.Carts.Update(entity);
             ecommerceContext.SaveChanges();
 
-            return Result<Cart>.Success(entity, "New Cart updated.");
+            return Result<Cart>.Success(entity, Messages.Cart.Updated);
         }
 
         public Result<bool> Delete(Cart entity)
@@ -49,7 +49,7 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
 
             var result = GetById(entity.Id);
 
-            return result is null ? Result<bool>.Success(true, "Cart is deleted.") : Result<bool>.Failure("Cart not found.");
+            return result is null ? Result<bool>.Success(true, Messages.Cart.Deleted) : Result<bool>.Failure(Messages.Cart.NotFound);
         }
     }
 }

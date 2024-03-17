@@ -11,7 +11,7 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
         {
             var entity = ecommerceContext.Categories.Find(id);
 
-            return entity is not null ? Result<Category>.Success(entity,"Category found.") : Result<Category>.Failure("Category not found.");
+            return entity is not null ? Result<Category>.Success(entity,Messages.Category.Found) : Result<Category>.Failure(Messages.Category.NotFound);
         }
 
         public Result<List<Category>> GetAll()
@@ -20,10 +20,10 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
 
             if (entities.Count > 0)
             {
-                return Result<List<Category>>.Success(entities, "Categories found.");
+                return Result<List<Category>>.Success(entities, Messages.Category.Found);
             }
 
-            return Result<List<Category>>.Failure("Categories not found.");
+            return Result<List<Category>>.Failure(Messages.Category.NotFound);
         }
 
         public Result<Category> Add(Category entity)
@@ -31,7 +31,7 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
             ecommerceContext.Categories.Add(entity);
             ecommerceContext.SaveChanges();
 
-            return Result<Category>.Success(entity, "New Category added.");
+            return Result<Category>.Success(entity, Messages.Category.Added);
         }
 
         public Result<Category> Update(Category entity)
@@ -39,7 +39,7 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
             ecommerceContext.Categories.Update(entity);
             ecommerceContext.SaveChanges();
 
-            return Result<Category>.Success(entity, "New Category updated.");
+            return Result<Category>.Success(entity, Messages.Category.Updated);
         }
 
         public Result<bool> Delete(Category entity)
@@ -49,7 +49,7 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
 
             var result = GetById(entity.Id);
 
-            return result is null ? Result<bool>.Success(true, "Category is deleted.") : Result<bool>.Failure("Category not found.");
+            return result is null ? Result<bool>.Success(true, Messages.Category.Deleted) : Result<bool>.Failure(Messages.Category.NotFound);
         }
     }
 }
