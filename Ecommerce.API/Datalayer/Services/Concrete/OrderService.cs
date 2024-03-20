@@ -11,7 +11,7 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
         {
             var entity = ecommerceContext.Orders.Find(id);
 
-            return entity is not null ? Result<Order>.Success(entity, "Order found.") : Result<Order>.Failure("Order not found.");
+            return entity is not null ? Result<Order>.Success(entity, Messages.Order.Found) : Result<Order>.Failure(Messages.Order.NotFound);
         }
 
         public Result<List<Order>> GetAll()
@@ -20,10 +20,10 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
 
             if (entities.Count > 0)
             {
-                return Result<List<Order>>.Success(entities, "Order found.");
+                return Result<List<Order>>.Success(entities, Messages.Order.Found);
             }
 
-            return Result<List<Order>>.Failure("Orders not found.");
+            return Result<List<Order>>.Failure(Messages.Order.NotFound);
         }
 
         public Result<Order> Add(Order entity)
@@ -31,7 +31,7 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
             ecommerceContext.Orders.Add(entity);
             ecommerceContext.SaveChanges();
 
-            return Result<Order>.Success(entity, "New Order added.");
+            return Result<Order>.Success(entity, Messages.Order.Added);
         }
 
         public Result<Order> Update(Order entity)
@@ -39,7 +39,7 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
             ecommerceContext.Orders.Update(entity);
             ecommerceContext.SaveChanges();
 
-            return Result<Order>.Success(entity, "New Order updated.");
+            return Result<Order>.Success(entity, Messages.Order.Updated);
         }
 
         public Result<bool> Delete(Order entity)
@@ -49,7 +49,7 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
 
             var result = GetById(entity.Id);
 
-            return result is null ? Result<bool>.Success(true, "Order is deleted.") : Result<bool>.Failure("Order not found.");
+            return result is null ? Result<bool>.Success(true, Messages.Order.Deleted) : Result<bool>.Failure(Messages.Order.NotFound);
         }
     }
 }

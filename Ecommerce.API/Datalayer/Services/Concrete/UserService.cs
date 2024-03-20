@@ -11,7 +11,7 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
         {
             var entity = ecommerceContext.Users.Find(id);
 
-            return entity is not null ? Result<User>.Success(entity,"User found.") : Result<User>.Failure("User not found.");
+            return entity is not null ? Result<User>.Success(entity, Messages.User.Found) : Result<User>.Failure(Messages.User.NotFound);
         }
 
         public Result<List<User>> GetAll()
@@ -20,10 +20,10 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
 
             if (entities.Count > 0)
             {
-                return Result<List<User>>.Success(entities, "Users found.");
+                return Result<List<User>>.Success(entities, Messages.User.Found);
             }
 
-            return Result<List<User>>.Failure("Users not found.");
+            return Result<List<User>>.Failure(Messages.User.NotFound);
         }
 
         public Result<User> Add(User entity)
@@ -31,7 +31,7 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
             ecommerceContext.Users.Add(entity);
             ecommerceContext.SaveChanges();
 
-            return Result<User>.Success(entity, "New User added.");
+            return Result<User>.Success(entity, Messages.User.Added);
         }
 
         public Result<User> Update(User entity)
@@ -39,7 +39,7 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
             ecommerceContext.Users.Update(entity);
             ecommerceContext.SaveChanges();
 
-            return Result<User>.Success(entity, "New User updated.");
+            return Result<User>.Success(entity, Messages.User.Updated);
         }
 
         public Result<bool> Delete(User entity)
@@ -49,7 +49,7 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
 
             var result = GetById(entity.Id);
 
-            return result is null ? Result<bool>.Success(true, "User is deleted.") : Result<bool>.Failure("User not found.");
+            return result is null ? Result<bool>.Success(true, Messages.User.Deleted) : Result<bool>.Failure(Messages.User.NotFound);
         }
     }
 }
