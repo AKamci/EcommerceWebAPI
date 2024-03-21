@@ -147,12 +147,11 @@ namespace Ecommerce.API.Datalayer.Context
 
 
 
-        public static User JsonFileRead()
+        public static List<User> JsonFileRead()
         {
-            User user = new User();
-            // Json Eklenecek
-            return user;
-           
+            string jsonString = File.ReadAllText("C:\\Users\\abdul\\OneDrive\\Desktop\\Github Dosyaları\\EcommerceWebAPI\\data.json");
+            List<User> users = JsonConvert.DeserializeObject<List<User>>(jsonString);
+            return users;
         }
 
        
