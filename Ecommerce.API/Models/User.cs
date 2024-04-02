@@ -2,10 +2,8 @@
 
 namespace Ecommerce.API.Models
 {
-    public class User
-    {
-        public int Id { get; set; }
-        
+    public class User:Entity
+    {       
         public string Name { get; set; } // Min: 3 chars Max: 97
 
         public string Surname { get; set; } // Min: 3 chars Max: 9

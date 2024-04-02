@@ -1,8 +1,9 @@
 ﻿namespace Ecommerce.API.Models
 {
-    public class IdCard
+    public class IdCard:Entity
     {
-        public int Id { get; set; }
+        
+        
         public User User { get; set; }
     }
 }
