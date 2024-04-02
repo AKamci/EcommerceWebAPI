@@ -2,8 +2,6 @@
 {
     public class IdCard:Entity
     {
-        
-        
         public User User { get; set; }
     }
 }

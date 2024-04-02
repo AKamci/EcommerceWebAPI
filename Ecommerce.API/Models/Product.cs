@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Ecommerce.API.Models
+﻿namespace Ecommerce.API.Models
 {
     public class Product:Entity
     {
-       
         public int CategoryId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

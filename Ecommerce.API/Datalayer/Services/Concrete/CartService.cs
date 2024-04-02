@@ -1,22 +1,29 @@
-﻿using Ecommerce.API.Datalayer.Context;
+﻿using Ecommerce.API.Datalayer.Repos.Abstract;
 using Ecommerce.API.Datalayer.Services.Abstract;
 using Ecommerce.API.Infrastructure;
 using Ecommerce.API.Models;
 
 namespace Ecommerce.API.Datalayer.Services.Concrete
 {
-    public class CartService(EcommerceContext ecommerceContext) : ICartService
+    public class CartService : ICartService
     {
+        private readonly ICartRepo _repo;
+
+        public CartService(ICartRepo repo)
+        {
+            _repo = repo;
+        }
+
         public Result<Cart> GetById(int id)
         {
-            var entity = ecommerceContext.Carts.Find(id);
+            var entity = _repo.GetById(id);
 
             return entity is not null ? Result<Cart>.Success(entity, Messages.Cart.Found) : Result<Cart>.Failure(Messages.Cart.NotFound);
         }
 
         public Result<List<Cart>> GetAll()
         {
-            var entities = ecommerceContext.Carts.ToList();
+            var entities = _repo.GetAll();
 
             if (entities.Count > 0)
             {
@@ -28,24 +35,20 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
 
         public Result<Cart> Add(Cart entity)
         {
-            ecommerceContext.Carts.Add(entity);
-            ecommerceContext.SaveChanges();
-
+            _repo.Add(entity);
             return Result<Cart>.Success(entity, Messages.Cart.Added);
         }
 
         public Result<Cart> Update(Cart entity)
         {
-            ecommerceContext.Carts.Update(entity);
-            ecommerceContext.SaveChanges();
+            _repo.Update(entity);
 
             return Result<Cart>.Success(entity, Messages.Cart.Updated);
         }
 
         public Result<bool> Delete(Cart entity)
         {
-            ecommerceContext.Carts.Remove(entity);
-            ecommerceContext.SaveChanges();
+            _repo.Delete(entity.Id);
 
             var result = GetById(entity.Id);
 
