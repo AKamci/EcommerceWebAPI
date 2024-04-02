@@ -17,6 +17,7 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
         public Result<Cart> GetById(int id)
         {
             var entity = _repo.GetById(id);
+            // Cart To CartDTO
 
             return entity is not null ? Result<Cart>.Success(entity, Messages.Cart.Found) : Result<Cart>.Failure(Messages.Cart.NotFound);
         }
