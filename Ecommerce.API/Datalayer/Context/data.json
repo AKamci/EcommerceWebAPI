@@ -1,0 +1,24 @@
+[
+	{
+		"Id": 11,
+		"Name": "Ali",
+		"Surname": "Veli",
+		"Email": "aliveli@gmail.com",
+		"Age": 55
+	},
+	{
+		"Id": 22,
+		"Name": "Mehmet",
+		"MiddleName": "Tan",
+		"Surname": "San",
+		"Email": "mehmet@gmail.com",
+		"Age": 20
+	},
+	{
+		"Id": 33,
+		"Name": "Serpil",
+		"Surname": "Kuş",
+		"Email": "serpkus@gmail.com",
+		"Age": 45
+	}
+]

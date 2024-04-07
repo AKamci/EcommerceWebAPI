@@ -1,9 +1,6 @@
-﻿using Ecommerce.API.Datalayer.Context;
-using Ecommerce.API.Datalayer.Repos.Abstract;
-using Ecommerce.API.Datalayer.Services.Abstract;
+﻿using Ecommerce.API.Datalayer.Services.Abstract;
 using Ecommerce.API.Infrastructure;
 using Ecommerce.API.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.API.Datalayer.Services.Concrete;
 

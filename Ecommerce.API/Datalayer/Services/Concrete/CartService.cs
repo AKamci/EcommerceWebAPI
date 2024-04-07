@@ -16,10 +16,10 @@ public class CartService : ICartService
     public Result<Cart> GetById(int id)
     {
         var entity = _unitOfWork.CartRepo.GetById(id);
+        
         // Cart To CartDTO
-
-    return entity is not null ? Result<Cart>.Success(entity, Messages.Cart.Found) : Result<Cart>.Failure(Messages.Cart.NotFound);
-}
+        return entity is not null ? Result<Cart>.Success(entity, Messages.Cart.Found) : Result<Cart>.Failure(Messages.Cart.NotFound);
+    }
 
     public Result<List<Cart>> GetAll()
     {

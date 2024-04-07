@@ -1,6 +1,4 @@
-﻿using Ecommerce.API.Datalayer.Context;
-using Ecommerce.API.Datalayer.Repos.Abstract;
-using Ecommerce.API.Datalayer.Services.Abstract;
+﻿using Ecommerce.API.Datalayer.Services.Abstract;
 using Ecommerce.API.Infrastructure;
 using Ecommerce.API.Models;
 
@@ -19,8 +17,8 @@ public class UserService : IUserService
     public Result<User> GetById(int id)
     {
         var entity = _unitOfWork.UserRepo.GetById(id);
+        
         // User To UserDTO
-
         return entity is not null ? Result<User>.Success(entity, Messages.User.Found) : Result<User>.Failure(Messages.User.NotFound);
     }
 

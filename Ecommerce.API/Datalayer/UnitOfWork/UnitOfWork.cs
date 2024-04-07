@@ -1,6 +1,5 @@
 ﻿using Ecommerce.API.Datalayer.Context;
 using Ecommerce.API.Datalayer.Repos.Abstract;
-using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.API.Datalayer;
 
@@ -41,8 +40,6 @@ public class UnitOfWork : IDisposable
     {
         _context.SaveChanges();
     }
-
-
 
     public void Dispose()
     {

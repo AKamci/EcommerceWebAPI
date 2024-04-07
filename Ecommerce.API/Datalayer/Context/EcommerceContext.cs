@@ -1,7 +1,5 @@
-﻿﻿using Ecommerce.API.Models;
+﻿using Ecommerce.API.Models;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Ecommerce.API.Datalayer.Context
 {
@@ -15,16 +13,14 @@ namespace Ecommerce.API.Datalayer.Context
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
 
-        
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Seeding
             modelBuilder.Entity<Category>().HasData(Seed.Categories());
            // modelBuilder.Entity<User>().HasData(Seed.Users());
             modelBuilder.Entity<Product>().HasData(Seed.Products());
-            modelBuilder.Entity<Order>().HasData(Seed.Orders());      
-            modelBuilder.Entity<User>().HasData(Seed.JsonFileRead());
+            //modelBuilder.Entity<Order>().HasData(Seed.Orders());      
+            modelBuilder.Entity<User>().HasData(Seed.ReadUserFromJsonFile());
 
             // Unique Field
             modelBuilder.Entity<User>().HasIndex(t => t.Email).IsUnique();

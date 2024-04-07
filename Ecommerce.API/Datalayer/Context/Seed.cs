@@ -1,6 +1,5 @@
 ﻿using Ecommerce.API.Models;
 using Newtonsoft.Json;
-using System;
 
 namespace Ecommerce.API.Datalayer.Context
 {
@@ -145,11 +144,9 @@ namespace Ecommerce.API.Datalayer.Context
             };
         }
 
-
-
-        public static List<User> JsonFileRead()
+        public static List<User> ReadUserFromJsonFile()
         {
-            string jsonString = File.ReadAllText("C:\\Users\\abdul\\OneDrive\\Desktop\\Github Dosyaları\\EcommerceWebAPI\\data.json");
+            string jsonString = File.ReadAllText(Path.Combine("Datalayer","Context","data.json"));
             List<User> users = JsonConvert.DeserializeObject<List<User>>(jsonString);
             return users;
         }
