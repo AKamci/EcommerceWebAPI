@@ -1,5 +1,7 @@
 ﻿using Ecommerce.API.Datalayer.Context;
 using Ecommerce.API.Datalayer.Repos.Abstract;
+using Ecommerce.API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.API.Datalayer;
 
@@ -33,12 +35,31 @@ public class UnitOfWork : IDisposable
 
     public async Task SaveChangesAsync()
     {
+        UpdateAuditableFields();
         await _context.SaveChangesAsync();
     }
 
     public void SaveChanges()
     {
+        UpdateAuditableFields();
         _context.SaveChanges();
+    }
+
+    private void UpdateAuditableFields()
+    {
+        var entries = _context.ChangeTracker.Entries<Entity>().Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
+        foreach (var entry in entries)
+        {
+            if (entry.State == EntityState.Added)
+            {
+                entry.Entity.CreatedAt = DateTime.UtcNow;
+            }
+            
+            if (entry.State == EntityState.Modified)
+            {
+                entry.Entity.UpdatedAt = DateTime.UtcNow;
+            }
+        }
     }
 
     public void Dispose()
