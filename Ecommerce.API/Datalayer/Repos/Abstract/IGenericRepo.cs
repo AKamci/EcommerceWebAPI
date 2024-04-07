@@ -7,7 +7,7 @@ namespace Ecommerce.API.Datalayer.Repos.Abstract
     {
         List<TEntity> GetAll();
         TEntity GetById(int id);
-        IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> predicate);
+        IQueryable<TEntity> Filter(Expression<Func<TEntity, bool>> predicate);
         TEntity Add(TEntity product);
         void Update(TEntity product);
         void Delete(int id);
