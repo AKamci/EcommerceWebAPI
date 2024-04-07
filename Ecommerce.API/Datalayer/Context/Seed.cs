@@ -38,7 +38,7 @@ namespace Ecommerce.API.Datalayer.Context
                     CategoryId = 2,
                     Name = "Book",
                     Description = "LOTR Series",
-                    Price = 1000,                   
+                    Price = 1000,
                 },
                 new Product{
                     Id = 2,
@@ -116,7 +116,7 @@ namespace Ecommerce.API.Datalayer.Context
                         Surname = "San",
                         Email = "mehmet@gmail.com",
                         Age = 20
-                    }                  
+                    }
                 },
                 new Order
                 {
@@ -154,9 +154,9 @@ namespace Ecommerce.API.Datalayer.Context
             return users;
         }
 
-       
 
-        
+
+
 
 
 

@@ -2,5 +2,5 @@
 
 namespace Ecommerce.API.Datalayer.Services.Abstract
 {
-    public interface IProductService:IServiceBase<Product>;
+    public interface IProductService:IServiceBase<User>;
 }

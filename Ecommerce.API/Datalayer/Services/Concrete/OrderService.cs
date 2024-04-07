@@ -1,55 +1,60 @@
 ﻿using Ecommerce.API.Datalayer.Context;
+using Ecommerce.API.Datalayer.Repos.Abstract;
 using Ecommerce.API.Datalayer.Services.Abstract;
+using Ecommerce.API.Dtos;
 using Ecommerce.API.Infrastructure;
 using Ecommerce.API.Models;
 
-namespace Ecommerce.API.Datalayer.Services.Concrete
+namespace Ecommerce.API.Datalayer.Services.Concrete;
+
+public class OrderService : IOrderService
 {
-    public class OrderService(EcommerceContext ecommerceContext) : IOrderService
+    private readonly IOrderRepo _repo;
+
+    public OrderService(IOrderRepo repo)
     {
-        public Result<Order> GetById(int id)
-        {
-            var entity = ecommerceContext.Orders.Find(id);
+        _repo = repo;
+    }
 
-            return entity is not null ? Result<Order>.Success(entity, Messages.Order.Found) : Result<Order>.Failure(Messages.Order.NotFound);
+    public Result<Order> GetById(int id)
+    {
+        var entity = _repo.GetById(id);
+        // Cart To CartDTO
+
+        return entity is not null ? Result<Order>.Success(entity, Messages.Order.Found) : Result<Order>.Failure(Messages.Order.NotFound);
+    }
+
+    public Result<List<Order>> GetAll()
+    {
+        var entities = _repo.GetAll();
+
+        if (entities.Count > 0)
+        {
+            return Result<List<Order>>.Success(entities, Messages.Order.Found);
         }
 
-        public Result<List<Order>> GetAll()
-        {
-            var entities = ecommerceContext.Orders.ToList();
+        return Result<List<Order>>.Failure(Messages.Order.NotFound);
+    }
 
-            if (entities.Count > 0)
-            {
-                return Result<List<Order>>.Success(entities, Messages.Order.Found);
-            }
+    public Result<Order> Add(Order entity)
+    {
+        _repo.Add(entity);
+        return Result<Order>.Success(entity, Messages.Order.Added);
+    }
 
-            return Result<List<Order>>.Failure(Messages.Order.NotFound);
-        }
+    public Result<Order> Update(Order entity)
+    {
+        _repo.Update(entity);
 
-        public Result<Order> Add(Order entity)
-        {
-            ecommerceContext.Orders.Add(entity);
-            ecommerceContext.SaveChanges();
+        return Result<Order>.Success(entity, Messages.Order.Updated);
+    }
 
-            return Result<Order>.Success(entity, Messages.Order.Added);
-        }
+    public Result<bool> Delete(Order entity)
+    {
+        _repo.Delete(entity.Id);
 
-        public Result<Order> Update(Order entity)
-        {
-            ecommerceContext.Orders.Update(entity);
-            ecommerceContext.SaveChanges();
+        var result = GetById(entity.Id);
 
-            return Result<Order>.Success(entity, Messages.Order.Updated);
-        }
-
-        public Result<bool> Delete(Order entity)
-        {
-            ecommerceContext.Orders.Remove(entity);
-            ecommerceContext.SaveChanges();
-
-            var result = GetById(entity.Id);
-
-            return result is null ? Result<bool>.Success(true, Messages.Order.Deleted) : Result<bool>.Failure(Messages.Order.NotFound);
-        }
+        return result is null ? Result<bool>.Success(true, Messages.Order.Deleted) : Result<bool>.Failure(Messages.Order.NotFound);
     }
 }

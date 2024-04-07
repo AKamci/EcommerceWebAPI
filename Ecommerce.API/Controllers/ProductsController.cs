@@ -24,14 +24,14 @@ public class ProductsController(IProductService productService) : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Add(Product product)
+    public IActionResult Add(User product)
     {
         var result = productService.Add(product);
         return Ok(result);
     }
 
     [HttpPut]
-    public IActionResult Update(Product product)
+    public IActionResult Update(User product)
     {
         var result = productService.Update(product);
         return Ok(result);
