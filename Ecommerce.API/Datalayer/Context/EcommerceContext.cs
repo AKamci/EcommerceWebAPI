@@ -1,4 +1,4 @@
-﻿using Ecommerce.API.Models;
+﻿﻿using Ecommerce.API.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -12,7 +12,6 @@ namespace Ecommerce.API.Datalayer.Context
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<IdCard> IdCards { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
 

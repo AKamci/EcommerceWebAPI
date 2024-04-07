@@ -2,7 +2,7 @@
 
 namespace Ecommerce.API.Models
 {
-    public class User:Entity
+    public class User : Entity
     {       
         public string Name { get; set; } // Min: 3 chars Max: 97
         public string Surname { get; set; } // Min: 3 chars Max: 9

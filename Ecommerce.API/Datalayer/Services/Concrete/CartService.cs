@@ -18,20 +18,20 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
             var entity = _unitOfWork.CartRepo.GetById(id);
             // Cart To CartDTO
 
-            return entity is not null ? Result<Cart>.Success(entity, Messages.Cart.Found) : Result<Cart>.Failure(Messages.Cart.NotFound);
-        }
+        return entity is not null ? Result<Cart>.Success(entity, Messages.Cart.Found) : Result<Cart>.Failure(Messages.Cart.NotFound);
+    }
 
         public Result<List<Cart>> GetAll()
         {
             var entities = _unitOfWork.CartRepo.GetAll();
 
-            if (entities.Count > 0)
-            {
-                return Result<List<Cart>>.Success(entities, Messages.Cart.Found);
-            }
-
-            return Result<List<Cart>>.Failure(Messages.Cart.NotFound);
+        if (entities.Count > 0)
+        {
+            return Result<List<Cart>>.Success(entities, Messages.Cart.Found);
         }
+
+        return Result<List<Cart>>.Failure(Messages.Cart.NotFound);
+    }
 
         public Result<Cart> Add(Cart entity)
         {

@@ -1,60 +1,61 @@
 ﻿using Ecommerce.API.Datalayer.Context;
+using Ecommerce.API.Datalayer.Repos.Abstract;
 using Ecommerce.API.Datalayer.Services.Abstract;
 using Ecommerce.API.Infrastructure;
 using Ecommerce.API.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ecommerce.API.Datalayer.Services.Concrete
+namespace Ecommerce.API.Datalayer.Services.Concrete;
+
+public class ProductService : IProductService
 {
-    public class ProductService(EcommerceContext ecommerceContext) : IProductService
+ 
+    private readonly IProductRepo _repo;
+
+    public ProductService(IProductRepo repo)
     {
-        public Result<Product> GetById(int id)
-        {
-            var entity = ecommerceContext.Products.Find(id);
+        _repo = repo;
+    }
 
-            return entity is not null ? Result<Product>.Success(entity,Messages.Product.Found) : Result<Product>.Failure(Messages.Product.NotFound);
+    public Result<User> GetById(int id)
+    {
+        var entity = _repo.GetById(id);
+        // Cart To CartDTO
+
+        return entity is not null ? Result<User>.Success(entity, Messages.Product.Found) : Result<User>.Failure(Messages.Product.NotFound);
+    }
+
+    public Result<List<User>> GetAll()
+    {
+        var entities = _repo.GetAll();
+
+        if (entities.Count > 0)
+        {
+            return Result<List<User>>.Success(entities, Messages.Product.Found);
         }
 
-        public Result<List<Product>> GetAll()
-        {
-            // Eager loading is implemented
-            var entities = ecommerceContext
-                .Products
-                .Include(i => i.Category)
-                .ToList();
+        return Result<List<User>>.Failure(Messages.Product.NotFound);
+    }
 
-            if (entities.Count > 0)
-            {
-                return Result<List<Product>>.Success(entities, Messages.Product.Found);
-            }
+    public Result<User> Add(User entity)
+    {
+        _repo.Add(entity);
+        return Result<User>.Success(entity, Messages.Product.Added);
+    }
 
-            return Result<List<Product>>.Failure(Messages.Product.NotFound);
-        }
+    public Result<User> Update(User entity)
+    {
+        _repo.Update(entity);
 
-        public Result<Product> Add(Product entity)
-        {
-            ecommerceContext.Products.Add(entity);
-            ecommerceContext.SaveChanges();
+        return Result<User>.Success(entity, Messages.Product.Updated);
+    }
 
-            return Result<Product>.Success(entity, Messages.Product.Added);
-        }
+    public Result<bool> Delete(User entity)
+    {
+        _repo.Delete(entity.Id);
 
-        public Result<Product> Update(Product entity)
-        {
-            ecommerceContext.Products.Update(entity);
-            ecommerceContext.SaveChanges();
+        var result = GetById(entity.Id);
 
-            return Result<Product>.Success(entity, Messages.Product.Updated);
-        }
-
-        public Result<bool> Delete(Product entity)
-        {
-            ecommerceContext.Products.Remove(entity);
-            ecommerceContext.SaveChanges();
-
-            var result = GetById(entity.Id);
-
-            return result is null ? Result<bool>.Success(true, Messages.Product.Deleted) : Result<bool>.Failure(Messages.Product.NotFound);
-        }
+        return result is null ? Result<bool>.Success(true, Messages.Product.Deleted) : Result<bool>.Failure(Messages.Product.NotFound);
     }
 }
