@@ -1,22 +1,21 @@
-﻿using Ecommerce.API.Datalayer.Context;
-using Ecommerce.API.Datalayer.Services.Abstract;
+﻿using Ecommerce.API.Datalayer.Services.Abstract;
 using Ecommerce.API.Infrastructure;
 using Ecommerce.API.Models;
 
 namespace Ecommerce.API.Datalayer.Services.Concrete
 {
-    public class CategoryService(EcommerceContext ecommerceContext) : ICategoryService
+    public class CategoryService(UnitOfWork unitOfWork) : ICategoryService
     {
         public Result<Category> GetById(int id)
         {
-            var entity = ecommerceContext.Categories.Find(id);
+            var entity = unitOfWork.CategoryRepo.GetById(id);
 
             return entity is not null ? Result<Category>.Success(entity,Messages.Category.Found) : Result<Category>.Failure(Messages.Category.NotFound);
         }
 
         public Result<List<Category>> GetAll()
         {
-            var entities = ecommerceContext.Categories.ToList();
+            var entities = unitOfWork.CategoryRepo.GetAll();
 
             if (entities.Count > 0)
             {
@@ -28,24 +27,24 @@ namespace Ecommerce.API.Datalayer.Services.Concrete
 
         public Result<Category> Add(Category entity)
         {
-            ecommerceContext.Categories.Add(entity);
-            ecommerceContext.SaveChanges();
+            unitOfWork.CategoryRepo.Add(entity);
+            unitOfWork.SaveChanges();
 
             return Result<Category>.Success(entity, Messages.Category.Added);
         }
 
         public Result<Category> Update(Category entity)
         {
-            ecommerceContext.Categories.Update(entity);
-            ecommerceContext.SaveChanges();
+            unitOfWork.CategoryRepo.Update(entity);
+            unitOfWork.SaveChanges();
 
             return Result<Category>.Success(entity, Messages.Category.Updated);
         }
 
         public Result<bool> Delete(Category entity)
         {
-            ecommerceContext.Categories.Remove(entity);
-            ecommerceContext.SaveChanges();
+            unitOfWork.CategoryRepo.Delete(entity.Id);
+            unitOfWork.SaveChanges();
 
             var result = GetById(entity.Id);
 

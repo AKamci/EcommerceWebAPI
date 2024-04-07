@@ -1,4 +1,7 @@
+using Ecommerce.API.Datalayer;
 using Ecommerce.API.Datalayer.Context;
+using Ecommerce.API.Datalayer.Repos.Abstract;
+using Ecommerce.API.Datalayer.Repos.Concrete;
 using Ecommerce.API.Datalayer.Services.Abstract;
 using Ecommerce.API.Datalayer.Services.Concrete;
 using Microsoft.EntityFrameworkCore;
@@ -23,11 +26,24 @@ namespace Ecommerce.API
 
             // Add custom services
             // Dependency Injection(DI) Container
+            //Repos
+            builder.Services.AddTransient<IUserRepo, UserRepo>();
+            builder.Services.AddTransient<ICartRepo, CartRepo>();
+            builder.Services.AddTransient<ICategoryRepo, CategoryRepo>();
+            builder.Services.AddTransient<IProductRepo, ProductRepo>();
+            builder.Services.AddTransient<IOrderRepo, OrderRepo>();
+
+            // UnitOfWork
+            builder.Services.AddTransient<UnitOfWork>();
+
+            //Services
             builder.Services.AddTransient<IUserService, UserService>();
             builder.Services.AddTransient<ICartService, CartService>();
             builder.Services.AddTransient<ICategoryService, CategoryService>();
             builder.Services.AddTransient<IProductService, ProductService>();
             builder.Services.AddTransient<IOrderService, OrderService>();
+
+
 
             var app = builder.Build();
 
