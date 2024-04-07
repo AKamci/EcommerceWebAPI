@@ -4,9 +4,7 @@ using Ecommerce.API.Models;
 
 namespace Ecommerce.API.Datalayer.Services.Concrete;
 
-public class CategoryService : ICategoryService
-{
-    public class CategoryService(UnitOfWork unitOfWork) : ICategoryService
+public class CategoryService(UnitOfWork unitOfWork) : ICategoryService
     {
         public Result<Category> GetById(int id)
         {
