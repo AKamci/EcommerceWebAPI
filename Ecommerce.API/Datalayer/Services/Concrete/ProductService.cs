@@ -9,53 +9,54 @@ namespace Ecommerce.API.Datalayer.Services.Concrete;
 
 public class ProductService : IProductService
 {
- 
-    private readonly IProductRepo _repo;
 
-    public ProductService(IProductRepo repo)
+    private readonly UnitOfWork _unitOfWork;
+
+    public ProductService(UnitOfWork unitOfWork)
     {
-        _repo = repo;
+        _unitOfWork = unitOfWork;
     }
 
-    public Result<User> GetById(int id)
+    public Result<Product> GetById(int id)
     {
-        var entity = _repo.GetById(id);
-        // Cart To CartDTO
+        var entity = _unitOfWork.ProductRepo.GetById(id);
+        // Product To ProductDTO
 
-        return entity is not null ? Result<User>.Success(entity, Messages.Product.Found) : Result<User>.Failure(Messages.Product.NotFound);
+        return entity is not null ? Result<Product>.Success(entity, Messages.Product.Found) : Result<Product>.Failure(Messages.Product.NotFound);
     }
 
-    public Result<List<User>> GetAll()
+    public Result<List<Product>> GetAll()
     {
-        var entities = _repo.GetAll();
+        var entities = _unitOfWork.ProductRepo.GetAll();
 
         if (entities.Count > 0)
         {
-            return Result<List<User>>.Success(entities, Messages.Product.Found);
+            return Result<List<Product>>.Success(entities, Messages.Product.Found);
         }
 
-        return Result<List<User>>.Failure(Messages.Product.NotFound);
+        return Result<List<Product>>.Failure(Messages.Product.NotFound);
     }
 
-    public Result<User> Add(User entity)
+    public Result<Product> Add(Product entity)
     {
-        _repo.Add(entity);
-        return Result<User>.Success(entity, Messages.Product.Added);
+        _unitOfWork.ProductRepo.Add(entity);
+        _unitOfWork.SaveChanges();
+        return Result<Product>.Success(entity, Messages.Product.Added);
     }
 
-    public Result<User> Update(User entity)
+    public Result<Product> Update(Product entity)
     {
-        _repo.Update(entity);
-
-        return Result<User>.Success(entity, Messages.Product.Updated);
+        _unitOfWork.ProductRepo.Update(entity);
+        _unitOfWork.SaveChanges();
+        return Result<Product>.Success(entity, Messages.Product.Updated);
     }
 
-    public Result<bool> Delete(User entity)
+    public Result<bool> Delete(Product entity)
     {
-        _repo.Delete(entity.Id);
+        _unitOfWork.ProductRepo.Delete(entity.Id);
 
         var result = GetById(entity.Id);
-
+        _unitOfWork.SaveChanges();
         return result is null ? Result<bool>.Success(true, Messages.Product.Deleted) : Result<bool>.Failure(Messages.Product.NotFound);
     }
 }

@@ -9,24 +9,24 @@ namespace Ecommerce.API.Datalayer.Services.Concrete;
 public class UserService : IUserService
 {
 
-    private readonly IUserRepo _repo;
+    private readonly UnitOfWork _unitOfWork;
 
-    public UserService(IUserRepo repo)
+    public UserService(UnitOfWork unitOfWork)
     {
-        _repo = repo;
+        _unitOfWork = unitOfWork;
     }
 
     public Result<User> GetById(int id)
     {
-        var entity = _repo.GetById(id);
-        // Cart To CartDTO
+        var entity = _unitOfWork.UserRepo.GetById(id);
+        // User To UserDTO
 
         return entity is not null ? Result<User>.Success(entity, Messages.User.Found) : Result<User>.Failure(Messages.User.NotFound);
     }
 
     public Result<List<User>> GetAll()
     {
-        var entities = _repo.GetAll();
+        var entities = _unitOfWork.UserRepo.GetAll();
 
         if (entities.Count > 0)
         {
@@ -38,23 +38,24 @@ public class UserService : IUserService
 
     public Result<User> Add(User entity)
     {
-        _repo.Add(entity);
+        _unitOfWork.UserRepo.Add(entity);
+        _unitOfWork.SaveChanges();
         return Result<User>.Success(entity, Messages.User.Added);
     }
 
     public Result<User> Update(User entity)
     {
-        _repo.Update(entity);
-
+        _unitOfWork.UserRepo.Update(entity);
+        _unitOfWork.SaveChanges();
         return Result<User>.Success(entity, Messages.User.Updated);
     }
 
     public Result<bool> Delete(User entity)
     {
-        _repo.Delete(entity.Id);
+        _unitOfWork.UserRepo.Delete(entity.Id);
 
         var result = GetById(entity.Id);
-
+        _unitOfWork.SaveChanges();
         return result is null ? Result<bool>.Success(true, Messages.User.Deleted) : Result<bool>.Failure(Messages.User.NotFound);
     }
 }
