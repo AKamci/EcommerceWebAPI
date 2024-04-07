@@ -12,6 +12,6 @@ public class OrderRepo : GenericRepo<Order>, IOrderRepo
 
     public int GetAmountOfDailyOrders()
     {
-        return Where(t => t.OrderDate == DateTime.Today).Count();
+        return Filter(t => t.OrderDate == DateTime.Today).Count();
     }
 }

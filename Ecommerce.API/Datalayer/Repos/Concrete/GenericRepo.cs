@@ -2,7 +2,6 @@
 using Ecommerce.API.Datalayer.Repos.Abstract;
 using Ecommerce.API.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq.Expressions;
 
 namespace Ecommerce.API.Datalayer.Repos.Concrete;
@@ -15,13 +14,12 @@ public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity: Entity
     public GenericRepo(EcommerceContext context)
     {
         _context = context;
-        _dbSet = context.Set<TEntity>();
+        _dbSet = _context.Set<TEntity>();
     }
 
     public TEntity Add(TEntity product)
     {
         _dbSet.Add(product);
-        _context.SaveChanges();
         return product;
     }
 
@@ -31,7 +29,6 @@ public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity: Entity
         if(entity != null)
         {
             _dbSet.Remove(entity);
-            _context.SaveChanges();
         }
     }
 
@@ -54,10 +51,9 @@ public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity: Entity
     public void Update(TEntity product)
     {
         _dbSet.Update(product);
-        _context.SaveChanges();
     }
 
-    public IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> predicate)
+    public IQueryable<TEntity> Filter(Expression<Func<TEntity, bool>> predicate)
     {
         return _dbSet.Where(predicate);
     }
