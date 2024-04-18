@@ -8,6 +8,6 @@ namespace Ecommerce.API.Datalayer.Services.Abstract
         Result<List<T>> GetAll();
         Result<T> Add(T entity);
         Result<T> Update(T entity);
-        Result<bool> Delete(T entity);
+        Result<bool> Delete(int id);
     }
 }

@@ -41,7 +41,7 @@ public class CategoriesController(ICategoryService categoryService) : Controller
     public IActionResult Delete(int id)
     {
         var entity = categoryService.GetById(id);
-        var result = categoryService.Delete(entity.Value);
+        var result = categoryService.Delete(entity.Value.Id);
         return result.IsSuccess ? Ok(result) : NotFound();
     }
 }

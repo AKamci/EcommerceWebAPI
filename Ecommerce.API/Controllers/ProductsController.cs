@@ -41,7 +41,7 @@ public class ProductsController(IProductService productService) : ControllerBase
     public IActionResult Delete(int id)
     {
         var entity = productService.GetById(id);
-        var result = productService.Delete(entity.Value);
+        var result = productService.Delete(entity.Value.Id);
         return result.IsSuccess ? Ok(result) : NotFound();
     }
 }

@@ -41,7 +41,7 @@ public class UsersController(IUserService userService) : ControllerBase
     public IActionResult Delete(int id)
     {
         var entity = userService.GetById(id);
-        var result = userService.Delete(entity.Value);
+        var result = userService.Delete(entity.Value.Id);
         return result.IsSuccess ? Ok(result) : NotFound();
     }
 }

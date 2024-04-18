@@ -1,8 +1,5 @@
 ﻿using Ecommerce.API.Datalayer.Context;
 using Ecommerce.API.Datalayer.Repos.Abstract;
-using Ecommerce.API.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Ecommerce.API.Datalayer;
 

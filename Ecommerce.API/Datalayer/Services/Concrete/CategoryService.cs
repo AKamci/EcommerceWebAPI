@@ -41,12 +41,12 @@ public class CategoryService(UnitOfWork unitOfWork) : ICategoryService
         return Result<Category>.Success(entity, Messages.Category.Updated);
     }
 
-    public Result<bool> Delete(Category entity)
+    public Result<bool> Delete(int id)
     {
-        unitOfWork.CategoryRepo.Delete(entity.Id);
+        unitOfWork.CategoryRepo.Delete(id);
         unitOfWork.SaveChanges();
 
-        var result = GetById(entity.Id);
+        var result = GetById(id);
 
         return result is null ? Result<bool>.Success(true, Messages.Category.Deleted) : Result<bool>.Failure(Messages.Category.NotFound);
     }

@@ -48,11 +48,11 @@ public class ProductService : IProductService
         return Result<Product>.Success(entity, Messages.Product.Updated);
     }
 
-    public Result<bool> Delete(Product entity)
+    public Result<bool> Delete(int id)
     {
-        _unitOfWork.ProductRepo.Delete(entity.Id);
+        _unitOfWork.ProductRepo.Delete(id);
 
-        var result = GetById(entity.Id);
+        var result = GetById(id);
         _unitOfWork.SaveChanges();
         return result is null ? Result<bool>.Success(true, Messages.Product.Deleted) : Result<bool>.Failure(Messages.Product.NotFound);
     }

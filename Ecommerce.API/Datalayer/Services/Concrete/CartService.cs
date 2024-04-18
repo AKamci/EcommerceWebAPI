@@ -1,4 +1,6 @@
 ﻿using Ecommerce.API.Datalayer.Services.Abstract;
+using Ecommerce.API.Datalayer.Services.Mapping;
+using Ecommerce.API.Dtos;
 using Ecommerce.API.Infrastructure;
 using Ecommerce.API.Models;
 
@@ -13,45 +15,49 @@ public class CartService : ICartService
         _unitOfWork = unitOfWork;
     }
 
-    public Result<Cart> GetById(int id)
+    public Result<CartDto> GetById(int id)
     {
         var entity = _unitOfWork.CartRepo.GetById(id);
         
         // Cart To CartDTO
-        return entity is not null ? Result<Cart>.Success(entity, Messages.Cart.Found) : Result<Cart>.Failure(Messages.Cart.NotFound);
+        var cartDto = ObjectMapper.Mapper.Map<CartDto>(entity);
+        return entity is not null ? Result<CartDto>.Success(cartDto, Messages.Cart.Found) : Result<CartDto>.Failure(Messages.Cart.NotFound);
     }
 
-    public Result<List<Cart>> GetAll()
+    public Result<List<CartDto>> GetAll()
     {
         var entities = _unitOfWork.CartRepo.GetAll();
 
     if (entities.Count > 0)
     {
-        return Result<List<Cart>>.Success(entities, Messages.Cart.Found);
+            var dtoList = ObjectMapper.Mapper.Map<List<CartDto>>(entities);
+        return Result<List<CartDto>>.Success(dtoList, Messages.Cart.Found);
     }
 
-    return Result<List<Cart>>.Failure(Messages.Cart.NotFound);
+    return Result<List<CartDto>>.Failure(Messages.Cart.NotFound);
 }
 
-    public Result<Cart> Add(Cart entity)
+    public Result<CartDto> Add(CartDto entity)
     {
-        _unitOfWork.CartRepo.Add(entity);
+        var cart = ObjectMapper.Mapper.Map<Cart>(entity);
+        _unitOfWork.CartRepo.Add(cart);
         _unitOfWork.SaveChanges();
-        return Result<Cart>.Success(entity, Messages.Cart.Added);
+        return Result<CartDto>.Success(entity, Messages.Cart.Added);
     }
 
-    public Result<Cart> Update(Cart entity)
+    public Result<CartDto> Update(CartDto entity)
     {
-        _unitOfWork.CartRepo.Update(entity);
+        var cart = ObjectMapper.Mapper.Map<Cart>(entity);
+        _unitOfWork.CartRepo.Update(cart);
         _unitOfWork.SaveChanges();
-        return Result<Cart>.Success(entity, Messages.Cart.Updated);
+        return Result<CartDto>.Success(entity, Messages.Cart.Updated);
     }
 
-    public Result<bool> Delete(Cart entity)
-    {
-        _unitOfWork.CartRepo.Delete(entity.Id);
+    public Result<bool> Delete(int id)
+    { 
+        _unitOfWork.CartRepo.Delete(id);
 
-        var result = GetById(entity.Id);
+        var result = GetById(id);
         _unitOfWork.SaveChanges();
         return result is null ? Result<bool>.Success(true, Messages.Cart.Deleted) : Result<bool>.Failure(Messages.Cart.NotFound);
     }

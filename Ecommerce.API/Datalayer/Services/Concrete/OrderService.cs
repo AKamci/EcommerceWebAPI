@@ -47,11 +47,11 @@ public class OrderService : IOrderService
         return Result<Order>.Success(entity, Messages.Order.Updated);
     }
 
-    public Result<bool> Delete(Order entity)
+    public Result<bool> Delete(int id)
     {
-        _unitOfWork.OrderRepo.Delete(entity.Id);
+        _unitOfWork.OrderRepo.Delete(id);
 
-        var result = GetById(entity.Id);
+        var result = GetById(id);
         _unitOfWork.SaveChanges();
         return result is null ? Result<bool>.Success(true, Messages.Order.Deleted) : Result<bool>.Failure(Messages.Order.NotFound);
     }

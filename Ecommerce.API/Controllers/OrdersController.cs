@@ -42,7 +42,7 @@ namespace Ecommerce.API.Controllers
             public IActionResult Delete(int id)
             {
                 var entity = orderService.GetById(id);
-                var result = orderService.Delete(entity.Value);
+                var result = orderService.Delete(entity.Value.Id);
                 return result.IsSuccess ? Ok(result) : NotFound();
             }
         }

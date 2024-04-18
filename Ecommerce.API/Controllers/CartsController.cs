@@ -1,5 +1,5 @@
 ﻿using Ecommerce.API.Datalayer.Services.Abstract;
-using Ecommerce.API.Models;
+using Ecommerce.API.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.API.Controllers;
@@ -24,14 +24,14 @@ public class CartsController(ICartService cartService) : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Add(Cart cart)
+    public IActionResult Add(CartDto cart)
     {
         var result = cartService.Add(cart);
         return Ok(result);
     }
 
     [HttpPut]
-    public IActionResult Update(Cart cart)
+    public IActionResult Update(CartDto cart)
     {
         var result = cartService.Update(cart);
         return Ok(result);
@@ -41,7 +41,7 @@ public class CartsController(ICartService cartService) : ControllerBase
     public IActionResult Delete(int id)
     {
         var entity = cartService.GetById(id);
-        var result = cartService.Delete(entity.Value);
+        var result = cartService.Delete(entity.Value.Id);
         return result.IsSuccess ? Ok(result) : NotFound();
     }
 }

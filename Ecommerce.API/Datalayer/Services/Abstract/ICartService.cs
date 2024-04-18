@@ -1,6 +1,6 @@
-﻿using Ecommerce.API.Models;
+﻿using Ecommerce.API.Dtos;
 
 namespace Ecommerce.API.Datalayer.Services.Abstract
 {
-    public interface ICartService : IServiceBase<Cart>;
+    public interface ICartService : IServiceBase<CartDto>;
 }

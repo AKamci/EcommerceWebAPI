@@ -48,11 +48,11 @@ public class UserService : IUserService
         return Result<User>.Success(entity, Messages.User.Updated);
     }
 
-    public Result<bool> Delete(User entity)
+    public Result<bool> Delete(int id)
     {
-        _unitOfWork.UserRepo.Delete(entity.Id);
+        _unitOfWork.UserRepo.Delete(id);
 
-        var result = GetById(entity.Id);
+        var result = GetById(id);
         _unitOfWork.SaveChanges();
         return result is null ? Result<bool>.Success(true, Messages.User.Deleted) : Result<bool>.Failure(Messages.User.NotFound);
     }
