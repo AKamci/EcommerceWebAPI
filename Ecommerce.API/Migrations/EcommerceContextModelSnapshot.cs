@@ -102,32 +102,6 @@ namespace Ecommerce.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Electronic products.",
-                            IsActive = true,
-                            Name = "Electronic"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Books products.",
-                            IsActive = true,
-                            Name = "Books"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Toys products.",
-                            IsActive = true,
-                            Name = "Toys"
-                        });
                 });
 
             modelBuilder.Entity("Ecommerce.API.Models.Order", b =>
@@ -184,6 +158,8 @@ namespace Ecommerce.API.Migrations
 
                     b.HasIndex("OrderId");
 
+                    b.HasIndex("ProductId");
+
                     b.ToTable("OrderItems");
                 });
 
@@ -216,35 +192,6 @@ namespace Ecommerce.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryId = 2,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "LOTR Series",
-                            Name = "Book",
-                            Price = 1000f
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryId = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Iphone 15 Blue Color",
-                            Name = "Iphone 15  256GB",
-                            Price = 90000f
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CategoryId = 3,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Marvel licensed spiderman product",
-                            Name = "SpiderMan Action Figure",
-                            Price = 6500f
-                        });
                 });
 
             modelBuilder.Entity("Ecommerce.API.Models.User", b =>
@@ -290,36 +237,6 @@ namespace Ecommerce.API.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 11,
-                            Age = 55,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "aliveli@gmail.com",
-                            Name = "Ali",
-                            Surname = "Veli"
-                        },
-                        new
-                        {
-                            Id = 22,
-                            Age = 20,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "mehmet@gmail.com",
-                            MiddleName = "Tan",
-                            Name = "Mehmet",
-                            Surname = "San"
-                        },
-                        new
-                        {
-                            Id = 33,
-                            Age = 45,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "serpkus@gmail.com",
-                            Name = "Serpil",
-                            Surname = "Kuş"
-                        });
                 });
 
             modelBuilder.Entity("Ecommerce.API.Models.Cart", b =>
@@ -351,11 +268,21 @@ namespace Ecommerce.API.Migrations
 
             modelBuilder.Entity("Ecommerce.API.Models.OrderItem", b =>
                 {
-                    b.HasOne("Ecommerce.API.Models.Order", null)
+                    b.HasOne("Ecommerce.API.Models.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Ecommerce.API.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Ecommerce.API.Models.User", b =>

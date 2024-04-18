@@ -1,4 +1,5 @@
 ﻿using Ecommerce.API.Models;
+using Microsoft.AspNetCore.Components.Forms;
 using Newtonsoft.Json;
 
 namespace Ecommerce.API.Datalayer.Context
@@ -91,57 +92,27 @@ namespace Ecommerce.API.Datalayer.Context
 
         public static List<Order> Orders()
         {
-            return new List<Order>
-            {
-                new Order
-                {
-                    Id= 1,
-                    OrderDate = DateTime.Now,
-                    OrderItems = new List<OrderItem>
-                    {
-                        new OrderItem
-                        {
-                            Id = 1,
-                            OrderId = 1,
-                            Quantity = 10,
-                            ProductId = 1,
-                        }
-                    },
-                    User = new User
-                    {
-                        Id = 22,
-                        Name = "Mehmet",
-                        MiddleName = "Tan",
-                        Surname = "San",
-                        Email = "mehmet@gmail.com",
-                        Age = 20
-                    }
-                },
-                new Order
-                {
-                    Id= 5,
-                    OrderDate = DateTime.Now,
-                    OrderItems = new List<OrderItem>
-                    {
-                        new OrderItem
-                        {
-                            Id = 6,
-                            OrderId = 2,
-                            Quantity = 150,
-                            ProductId = 13,
-                        }
-                    },
-                    User = new User
-                    {
-                        Id = 22,
-                        Name = "Mehmet",
-                        MiddleName = "Tan",
-                        Surname = "San",
-                        Email = "mehmet@gmail.com",
-                        Age = 20
-                    }
-                }
-            };
+            var OrderList = new List<Order>();
+
+
+            var user = new User() { Id = 40, Age = 88, Email = "Deneme", Name = "Ali", Surname = "Veli" };
+            var order = new Order() { Id = 102, OrderDate = DateTime.Now, User = user };
+            order.OrderItems.Add(new() { Id = 1, Quantity = 100, OrderId= order.Id});
+
+            var user2 = new User() { Id = 42, Age = 88, Email = "Deneme", Name = "Ali", Surname = "Veli" };
+            var order2 = new Order() { Id = 101, OrderDate = DateTime.Now, User = user2 };
+            order2.OrderItems.Add(new() { Id = 1, Quantity = 100, OrderId = order.Id });
+
+            var user3 = new User() { Id = 44, Age = 88, Email = "Deneme", Name = "Ali", Surname = "Veli" };
+            var order3 = new Order() { Id = 100, OrderDate = DateTime.Now, User = user3 };
+            order3.OrderItems.Add(new() { Id = 1, Quantity = 100, OrderId = order.Id });
+
+            OrderList.Add(order);
+            OrderList.Add(order2);
+            OrderList.Add(order3);
+
+            return OrderList;
+            
         }
 
         public static List<User> ReadUserFromJsonFile()
@@ -151,18 +122,5 @@ namespace Ecommerce.API.Datalayer.Context
             return users;
         }
 
-
-
-
-
-
-
-
-
-        // Product Seed
-
-        // User Seed
-
-        // 2. adımda json dosyasından veri okuyarak seed işlemi yap.
     }
 }
