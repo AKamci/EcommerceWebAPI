@@ -1,6 +1,6 @@
-﻿using Ecommerce.API.Models;
+﻿using Ecommerce.API.Dtos;
 
 namespace Ecommerce.API.Datalayer.Services.Abstract
 {
-    public interface IProductService:IServiceBase<Product>;
+    public interface IProductService:IServiceBase<ProductDto>;
 }

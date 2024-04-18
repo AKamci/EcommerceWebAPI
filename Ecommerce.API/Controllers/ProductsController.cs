@@ -1,4 +1,5 @@
 ﻿using Ecommerce.API.Datalayer.Services.Abstract;
+using Ecommerce.API.Dtos;
 using Ecommerce.API.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,14 +25,14 @@ public class ProductsController(IProductService productService) : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Add(Product product)
+    public IActionResult Add(ProductDto product)
     {
         var result = productService.Add(product);
         return Ok(result);
     }
 
     [HttpPut]
-    public IActionResult Update(Product product)
+    public IActionResult Update(ProductDto product)
     {
         var result = productService.Update(product);
         return Ok(result);
