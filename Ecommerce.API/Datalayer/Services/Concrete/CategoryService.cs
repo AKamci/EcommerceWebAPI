@@ -1,4 +1,6 @@
 ﻿using Ecommerce.API.Datalayer.Services.Abstract;
+using Ecommerce.API.Datalayer.Services.Mapping;
+using Ecommerce.API.Dtos;
 using Ecommerce.API.Infrastructure;
 using Ecommerce.API.Models;
 
@@ -6,47 +8,56 @@ namespace Ecommerce.API.Datalayer.Services.Concrete;
 
 public class CategoryService(UnitOfWork unitOfWork) : ICategoryService
 {
-    public Result<Category> GetById(int id)
+
+
+
+    public Result<CategoryDto> GetById(int id)
     {
         var entity = unitOfWork.CategoryRepo.GetById(id);
 
-        return entity is not null ? Result<Category>.Success(entity, Messages.Cart.Found) : Result<Category>.Failure(Messages.Cart.NotFound);
+        var categoryDto = ObjectMapper.Mapper.Map<CategoryDto>(entity);
+        return entity is not null ? Result<CategoryDto>.Success(categoryDto, Messages.Cart.Found) : Result<CategoryDto>.Failure(Messages.Cart.NotFound);
     }
 
-    public Result<List<Category>> GetAll()
+    public Result<List<CategoryDto>> GetAll()
     {
         var entities = unitOfWork.CategoryRepo.GetAll();
 
+        
         if (entities.Count > 0)
         {
-            return Result<List<Category>>.Success(entities, Messages.Category.Found);
+            var dtoList = ObjectMapper.Mapper.Map<List<CategoryDto>>(entities);
+            return Result<List<CategoryDto>>.Success(dtoList, Messages.Category.Found);
         }
 
-        return Result<List<Category>>.Failure(Messages.Category.NotFound);
+        return Result<List<CategoryDto>>.Failure(Messages.Category.NotFound);
     }
 
-    public Result<Category> Add(Category entity)
+    public Result<CategoryDto> Add(CategoryDto entity)
     {
-        unitOfWork.CategoryRepo.Add(entity);
+        var category = ObjectMapper.Mapper.Map<Category>(entity);
+        unitOfWork.CategoryRepo.Add(category);
         unitOfWork.SaveChanges();
+        var lastDto = ObjectMapper.Mapper.Map<CategoryDto>(entity);
 
-        return Result<Category>.Success(entity, Messages.Category.Added);
+        return Result<CategoryDto>.Success(lastDto, Messages.Category.Added);
     }
 
-    public Result<Category> Update(Category entity)
+    public Result<CategoryDto> Update(CategoryDto entity)
     {
-        unitOfWork.CategoryRepo.Update(entity);
+        var category = ObjectMapper.Mapper.Map<Category>(entity);
+        unitOfWork.CategoryRepo.Update(category);
         unitOfWork.SaveChanges();
-
-        return Result<Category>.Success(entity, Messages.Category.Updated);
+        var lastDto = ObjectMapper.Mapper.Map<CategoryDto>(entity);
+        return Result<CategoryDto>.Success(lastDto, Messages.Category.Updated);
     }
 
     public Result<bool> Delete(int id)
     {
         unitOfWork.CategoryRepo.Delete(id);
-        unitOfWork.SaveChanges();
-
+        
         var result = GetById(id);
+        unitOfWork.SaveChanges();
 
         return result is null ? Result<bool>.Success(true, Messages.Category.Deleted) : Result<bool>.Failure(Messages.Category.NotFound);
     }

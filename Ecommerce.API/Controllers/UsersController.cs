@@ -1,4 +1,5 @@
 ﻿using Ecommerce.API.Datalayer.Services.Abstract;
+using Ecommerce.API.Dtos;
 using Ecommerce.API.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,14 +25,14 @@ public class UsersController(IUserService userService) : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Add(User user)
+    public IActionResult Add(UserDto user)
     {
         var result = userService.Add(user);
         return Ok(result);
     }
 
     [HttpPut]
-    public IActionResult Update(User user)
+    public IActionResult Update(UserDto user)
     {
         var result = userService.Update(user);
         return Ok(result);

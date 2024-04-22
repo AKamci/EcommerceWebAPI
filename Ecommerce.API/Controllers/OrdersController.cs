@@ -1,4 +1,5 @@
 ﻿using Ecommerce.API.Datalayer.Services.Abstract;
+using Ecommerce.API.Dtos;
 using Ecommerce.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,14 +26,14 @@ namespace Ecommerce.API.Controllers
             }
 
             [HttpPost]
-            public IActionResult Add(Order order)
+            public IActionResult Add(OrderDto order)
             {
                 var result = orderService.Add(order);
                 return Ok(result);
             }
 
             [HttpPut]
-            public IActionResult Update(Order order)
+            public IActionResult Update(OrderDto order)
             {
                 var result = orderService.Update(order);
                 return Ok(result);

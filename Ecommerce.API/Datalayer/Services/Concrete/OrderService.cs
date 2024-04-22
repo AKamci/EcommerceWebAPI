@@ -1,4 +1,6 @@
 ﻿using Ecommerce.API.Datalayer.Services.Abstract;
+using Ecommerce.API.Datalayer.Services.Mapping;
+using Ecommerce.API.Dtos;
 using Ecommerce.API.Infrastructure;
 using Ecommerce.API.Models;
 
@@ -13,38 +15,45 @@ public class OrderService : IOrderService
         _unitOfWork = unitOfWork;
     }
 
-    public Result<Order> GetById(int id)
+    public Result<OrderDto> GetById(int id)
     {
         var entity = _unitOfWork.OrderRepo.GetById(id);
         // Order To OrderDTO
-
-        return entity is not null ? Result<Order>.Success(entity, Messages.Order.Found) : Result<Order>.Failure(Messages.Order.NotFound);
+        var orderDto = ObjectMapper.Mapper.Map<OrderDto>(entity);
+        return entity is not null ? Result<OrderDto>.Success(orderDto, Messages.Order.Found) : Result<OrderDto>.Failure(Messages.Order.NotFound);
     }
 
-    public Result<List<Order>> GetAll()
+    public Result<List<OrderDto>> GetAll()
     {
         var entities = _unitOfWork.OrderRepo.GetAll();
 
         if (entities.Count > 0)
         {
-            return Result<List<Order>>.Success(entities, Messages.Order.Found);
+            var dtoList = ObjectMapper.Mapper.Map<List<OrderDto>>(entities);
+            return Result<List<OrderDto>>.Success(dtoList, Messages.Order.Found);
         }
 
-        return Result<List<Order>>.Failure(Messages.Order.NotFound);
+        return Result<List<OrderDto>>.Failure(Messages.Order.NotFound);
     }
 
-    public Result<Order> Add(Order entity)
+    public Result<OrderDto> Add(OrderDto entity)
     {
-        _unitOfWork.OrderRepo.Add(entity);
+        var order = ObjectMapper.Mapper.Map<Order>(entity);
+        _unitOfWork.OrderRepo.Add(order);
         _unitOfWork.SaveChanges();
-        return Result<Order>.Success(entity, Messages.Order.Added);
+        var lastDto = ObjectMapper.Mapper.Map<OrderDto>(entity);
+
+        return Result<OrderDto>.Success(lastDto, Messages.Order.Added);
     }
 
-    public Result<Order> Update(Order entity)
+    public Result<OrderDto> Update(OrderDto entity)
     {
-        _unitOfWork.OrderRepo.Update(entity);
+        var order = ObjectMapper.Mapper.Map<Order>(entity);
+        _unitOfWork.OrderRepo.Update(order);
         _unitOfWork.SaveChanges();
-        return Result<Order>.Success(entity, Messages.Order.Updated);
+        var lastDto = ObjectMapper.Mapper.Map<OrderDto>(entity);
+
+        return Result<OrderDto>.Success(lastDto, Messages.Order.Updated);
     }
 
     public Result<bool> Delete(int id)

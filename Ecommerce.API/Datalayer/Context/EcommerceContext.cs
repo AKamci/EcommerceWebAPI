@@ -20,11 +20,11 @@ namespace Ecommerce.API.Datalayer.Context
 
             // Seeding
 
-            modelBuilder.Entity<Category>().HasData(Seed.Categories());
-            modelBuilder.Entity<User>().HasData(Seed.Users());
-            modelBuilder.Entity<Product>().HasData(Seed.Products());
-            modelBuilder.Entity<Order>().HasData(Seed.Orders());
-            modelBuilder.Entity<User>().HasData(Seed.ReadUserFromJsonFile());
+            //modelBuilder.Entity<Category>().HasData(Seed.Categories());
+            //modelBuilder.Entity<User>().HasData(Seed.Users());
+            //modelBuilder.Entity<Product>().HasData(Seed.Products());
+            //modelBuilder.Entity<Order>().HasData(Seed.Orders());
+            //modelBuilder.Entity<User>().HasData(Seed.ReadUserFromJsonFile());
 
             // Unique Field
             modelBuilder.Entity<User>().HasIndex(t => t.Email).IsUnique();

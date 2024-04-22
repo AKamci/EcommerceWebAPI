@@ -1,4 +1,5 @@
 ﻿using Ecommerce.API.Datalayer.Services.Abstract;
+using Ecommerce.API.Dtos;
 using Ecommerce.API.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,14 +25,14 @@ public class CategoriesController(ICategoryService categoryService) : Controller
     }
 
     [HttpPost]
-    public IActionResult Add(Category category)
+    public IActionResult Add(CategoryDto category)
     {
         var result = categoryService.Add(category);
         return Ok(result);
     }
 
     [HttpPut]
-    public IActionResult Update(Category category)
+    public IActionResult Update(CategoryDto category)
     {
         var result = categoryService.Update(category);
         return Ok(result);
