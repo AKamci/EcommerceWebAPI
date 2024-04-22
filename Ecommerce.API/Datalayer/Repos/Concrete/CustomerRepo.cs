@@ -4,9 +4,9 @@ using Ecommerce.API.Models;
 
 namespace Ecommerce.API.Datalayer.Repos.Concrete;
 
-public class UserRepo : GenericRepo<User>, IUserRepo
+public class CustomerRepo : GenericRepo<Customer>, ICustomerRepo
 {
-    public UserRepo(EcommerceContext context) : base(context)
+    public CustomerRepo(EcommerceContext context) : base(context)
     {
     }
 }

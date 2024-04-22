@@ -1,13 +1,14 @@
 ﻿using Ecommerce.API.Datalayer.Services.Abstract;
 using Ecommerce.API.Dtos;
-using Ecommerce.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.API.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
-public class UsersController(IUserService userService) : ControllerBase
+public class CustomersController(ICustomerService userService) : ControllerBase
 {
     [HttpGet]
     [Route("{id:int}")]
@@ -25,14 +26,14 @@ public class UsersController(IUserService userService) : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Add(UserDto user)
+    public IActionResult Add(CustomerDto user)
     {
         var result = userService.Add(user);
         return Ok(result);
     }
 
     [HttpPut]
-    public IActionResult Update(UserDto user)
+    public IActionResult Update(CustomerDto user)
     {
         var result = userService.Update(user);
         return Ok(result);

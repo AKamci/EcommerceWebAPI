@@ -1,11 +1,11 @@
 ﻿using Ecommerce.API.Datalayer.Services.Abstract;
 using Ecommerce.API.Dtos;
-using Ecommerce.API.Models;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
         public class OrdersController(IOrderService orderService) : ControllerBase

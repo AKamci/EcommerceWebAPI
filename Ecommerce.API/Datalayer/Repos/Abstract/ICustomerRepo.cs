@@ -2,7 +2,7 @@
 
 namespace Ecommerce.API.Datalayer.Repos.Abstract
 {
-    public interface IUserRepo : IGenericRepo<User>
+    public interface ICustomerRepo : IGenericRepo<Customer>
     {
     }
 }

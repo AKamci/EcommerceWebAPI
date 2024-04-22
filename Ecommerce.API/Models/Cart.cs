@@ -2,7 +2,7 @@
 {
     public class Cart:Entity
     {
-        public User User { get; set; }
+        public Customer Customer { get; set; }
         public ICollection<CartItem> CartItems { get; set; }
     }
 }

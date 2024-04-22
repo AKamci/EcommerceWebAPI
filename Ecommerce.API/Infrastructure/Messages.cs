@@ -65,11 +65,11 @@
 
         public static class User
         {
-            public static string Found = "User found.";
-            public static string NotFound = "User not found.";
-            public static string Added = "User added.";
-            public static string Updated = "User updated.";
-            public static string Deleted = "User is deleted.";
+            public static string Found = "Customer found.";
+            public static string NotFound = "Customer not found.";
+            public static string Added = "Customer added.";
+            public static string Updated = "Customer updated.";
+            public static string Deleted = "Customer is deleted.";
         }
 
     }

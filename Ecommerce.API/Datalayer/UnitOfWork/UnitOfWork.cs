@@ -10,12 +10,12 @@ public class UnitOfWork : IDisposable
     private ICategoryRepo _categoryRepo;
     private IOrderRepo _orderRepo;
     private IProductRepo _productRepo;
-    private IUserRepo _userRepo;
+    private ICustomerRepo _userRepo;
 
     // Step 2: Add DbContext referance
     private readonly EcommerceContext _context;
 
-    public UnitOfWork(ICartRepo cartRepo, ICategoryRepo categoryRepo, IOrderRepo orderRepo, IProductRepo productRepo, IUserRepo userRepo, EcommerceContext context)
+    public UnitOfWork(ICartRepo cartRepo, ICategoryRepo categoryRepo, IOrderRepo orderRepo, IProductRepo productRepo, ICustomerRepo userRepo, EcommerceContext context)
     {
         _cartRepo = cartRepo;
         _categoryRepo = categoryRepo;
@@ -29,7 +29,7 @@ public class UnitOfWork : IDisposable
     public ICategoryRepo CategoryRepo => _categoryRepo;
     public IOrderRepo OrderRepo => _orderRepo;
     public IProductRepo ProductRepo => _productRepo;
-    public IUserRepo UserRepo => _userRepo;
+    public ICustomerRepo UserRepo => _userRepo;
 
     public async Task SaveChangesAsync()
     {

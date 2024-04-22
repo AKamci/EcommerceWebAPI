@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce.API.Dtos;
 
-public class UserDto
+public class CustomerDto
 {      
     public int Id { get; set; }
     public string Name { get; set; }

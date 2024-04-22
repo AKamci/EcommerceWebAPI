@@ -4,6 +4,8 @@ using Ecommerce.API.Datalayer.Repos.Abstract;
 using Ecommerce.API.Datalayer.Repos.Concrete;
 using Ecommerce.API.Datalayer.Services.Abstract;
 using Ecommerce.API.Datalayer.Services.Concrete;
+using Ecommerce.API.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.API
@@ -21,13 +23,24 @@ namespace Ecommerce.API
                 options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnectionString"));
             });
 
+            // Identity
+            builder.Services.AddAuthentication();
+            builder.Services.AddAuthorization();
+            builder.Services.AddEndpointsApiExplorer();
+
+            builder.Services.AddIdentityApiEndpoints<AppUser>()
+                .AddDefaultTokenProviders()
+                .AddEntityFrameworkStores<EcommerceContext>();
+
             builder.Services.AddSwaggerGen();
             builder.Services.AddControllers();
+
+            
 
             // Add custom services
             // Dependency Injection(DI) Container
             //Repos
-            builder.Services.AddTransient<IUserRepo, UserRepo>();
+            builder.Services.AddTransient<ICustomerRepo, CustomerRepo>();
             builder.Services.AddTransient<ICartRepo, CartRepo>();
             builder.Services.AddTransient<ICategoryRepo, CategoryRepo>();
             builder.Services.AddTransient<IProductRepo, ProductRepo>();
@@ -37,12 +50,13 @@ namespace Ecommerce.API
             builder.Services.AddTransient<UnitOfWork>();
 
             //Services
-            builder.Services.AddTransient<IUserService, UserService>();
+            builder.Services.AddTransient<ICustomerService, CustomerService>();
             builder.Services.AddTransient<ICartService, CartService>();
             builder.Services.AddTransient<ICategoryService, CategoryService>();
             builder.Services.AddTransient<IProductService, ProductService>();
             builder.Services.AddTransient<IOrderService, OrderService>();
 
+           
 
 
             var app = builder.Build();
@@ -52,10 +66,14 @@ namespace Ecommerce.API
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                //app.ApplyMigrations();
             }
 
-            app.UseAuthorization();
+            app.MapIdentityApi<AppUser>();
 
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapControllers();
 

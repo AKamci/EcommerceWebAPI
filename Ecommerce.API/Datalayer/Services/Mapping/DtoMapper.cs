@@ -14,7 +14,7 @@ namespace Ecommerce.API.Datalayer.Services.Mapping
             CreateMap<Category, CategoryDto>().ReverseMap();
             CreateMap<Order, OrderDto>().ReverseMap();
             CreateMap<OrderItem, OrderItemDto>().ReverseMap();
-            CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<Customer, CustomerDto>().ReverseMap();
         }
     }
 }
