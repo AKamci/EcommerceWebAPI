@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.API.Datalayer.Context
 {
-    public class EcommerceContext(DbContextOptions<EcommerceContext> options) : IdentityDbContext<AppUser>(options)
+    public class EcommerceContext(DbContextOptions<EcommerceContext> options) : IdentityDbContext<AppUser, AppRole, string>(options)
     {
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
