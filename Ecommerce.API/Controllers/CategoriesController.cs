@@ -1,12 +1,11 @@
 ﻿using Ecommerce.API.Datalayer.Services.Abstract;
 using Ecommerce.API.Dtos;
-using Ecommerce.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.API.Controllers;
 
-[Authorize]
+
 [Route("api/[controller]")]
 [ApiController]
 public class CategoriesController(ICategoryService categoryService) : ControllerBase
@@ -26,6 +25,7 @@ public class CategoriesController(ICategoryService categoryService) : Controller
         return Ok(result);
     }
 
+    [Authorize]
     [HttpPost]
     public IActionResult Add(CategoryCreateDto category)
     {
@@ -40,6 +40,7 @@ public class CategoriesController(ICategoryService categoryService) : Controller
         return Ok(result);
     }
 
+    [Authorize]
     [HttpPut]
     public IActionResult Update(CategoryDto category)
     {
@@ -47,6 +48,7 @@ public class CategoriesController(ICategoryService categoryService) : Controller
         return Ok(result);
     }
 
+    [Authorize]
     [HttpDelete]
     public IActionResult Delete(int id)
     {

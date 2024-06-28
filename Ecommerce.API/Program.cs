@@ -56,10 +56,16 @@ namespace Ecommerce.API
             builder.Services.AddTransient<IProductService, ProductService>();
             builder.Services.AddTransient<IOrderService, OrderService>();
 
-           
-
+            builder.Services.AddCors(o => o.AddPolicy("EcommerceCors", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
 
             var app = builder.Build();
+
+            app.UseCors("EcommerceCors");
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
