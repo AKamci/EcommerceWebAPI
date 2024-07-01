@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.API.Controllers;
 
-[Authorize]
+
 [Route("api/[controller]")]
 [ApiController]
 public class ProductsController(IProductService productService) : ControllerBase
@@ -25,6 +25,7 @@ public class ProductsController(IProductService productService) : ControllerBase
         return Ok(result);
     }
 
+    [Authorize]
     [HttpPost]
     public IActionResult Add(ProductDto product)
     {
@@ -32,6 +33,7 @@ public class ProductsController(IProductService productService) : ControllerBase
         return Ok(result);
     }
 
+    [Authorize]
     [HttpPut]
     public IActionResult Update(ProductDto product)
     {
@@ -39,6 +41,7 @@ public class ProductsController(IProductService productService) : ControllerBase
         return Ok(result);
     }
 
+    [Authorize]
     [HttpDelete]
     public IActionResult Delete(int id)
     {
