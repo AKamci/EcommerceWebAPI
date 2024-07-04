@@ -65,4 +65,17 @@ public class ProductService : IProductService
         _unitOfWork.SaveChanges();
         return result is null ? Result<bool>.Success(true, Messages.Product.Deleted) : Result<bool>.Failure(Messages.Product.NotFound);
     }
+
+    public Result<List<ProductDto>> GetAllByCategoryId(int categoryId)
+    {
+        var entities = _unitOfWork.ProductRepo.GetAll().Where(t=> t.CategoryId == categoryId).ToList();
+
+        if (entities.Count > 0)
+        {
+            var listDto = ObjectMapper.Mapper.Map<List<ProductDto>>(entities);
+            return Result<List<ProductDto>>.Success(listDto, Messages.Product.Found);
+        }
+
+        return Result<List<ProductDto>>.Failure(Messages.Product.NotFound);
+    }
 }

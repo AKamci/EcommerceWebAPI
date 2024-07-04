@@ -25,6 +25,14 @@ public class ProductsController(IProductService productService) : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet]
+    [Route("[action]/{categoryId:int}")]
+    public IActionResult GetAllByCategoryId(int categoryId)
+    {
+        var result = productService.GetAllByCategoryId(categoryId);
+        return Ok(result);
+    }
+
     [Authorize]
     [HttpPost]
     public IActionResult Add(ProductDto product)
