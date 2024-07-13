@@ -6,6 +6,7 @@ using Ecommerce.API.Datalayer.Services.Abstract;
 using Ecommerce.API.Datalayer.Services.Concrete;
 using Ecommerce.API.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.API

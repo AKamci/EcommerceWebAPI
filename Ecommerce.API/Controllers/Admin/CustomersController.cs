@@ -3,10 +3,10 @@ using Ecommerce.API.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Ecommerce.API.Controllers;
+namespace Ecommerce.API.Controllers.Admin;
 
 [Authorize]
-[Route("api/[controller]")]
+[Route("api/admin/[controller]")]
 [ApiController]
 public class CustomersController(ICustomerService userService) : ControllerBase
 {

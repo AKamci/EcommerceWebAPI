@@ -9,6 +9,7 @@
             public static string Added = "Cart added.";
             public static string Updated = "Cart updated.";
             public static string Deleted = "Cart is deleted.";
+            public static string ProductAdded = "Product is added in cart.";
         }
 
         public static class Category

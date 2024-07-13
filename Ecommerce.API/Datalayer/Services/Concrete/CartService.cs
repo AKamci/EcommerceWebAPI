@@ -18,7 +18,7 @@ public class CartService : ICartService
     public Result<CartDto> GetById(int id)
     {
         var entity = _unitOfWork.CartRepo.GetById(id);
-        
+
         // Cart To CartDTO
         var cartDto = ObjectMapper.Mapper.Map<CartDto>(entity);
         return entity is not null ? Result<CartDto>.Success(cartDto, Messages.Cart.Found) : Result<CartDto>.Failure(Messages.Cart.NotFound);
@@ -28,14 +28,14 @@ public class CartService : ICartService
     {
         var entities = _unitOfWork.CartRepo.GetAll();
 
-    if (entities.Count > 0)
-    {
+        if (entities.Count > 0)
+        {
             var dtoList = ObjectMapper.Mapper.Map<List<CartDto>>(entities);
-        return Result<List<CartDto>>.Success(dtoList, Messages.Cart.Found);
-    }
+            return Result<List<CartDto>>.Success(dtoList, Messages.Cart.Found);
+        }
 
-    return Result<List<CartDto>>.Failure(Messages.Cart.NotFound);
-}
+        return Result<List<CartDto>>.Failure(Messages.Cart.NotFound);
+    }
 
     public Result<CartDto> Add(CartDto entity)
     {
@@ -54,11 +54,65 @@ public class CartService : ICartService
     }
 
     public Result<bool> Delete(int id)
-    { 
+    {
         _unitOfWork.CartRepo.Delete(id);
 
         var result = GetById(id);
         _unitOfWork.SaveChanges();
         return result is null ? Result<bool>.Success(true, Messages.Cart.Deleted) : Result<bool>.Failure(Messages.Cart.NotFound);
+    }
+
+    public Result<bool> AddSingleProduct(int customerId, int productId, int quantity)
+    {
+        var cartDto = GetOrCreateCartForCurrentCustomer(customerId);
+        var cart = ObjectMapper.Mapper.Map<Cart>(cartDto.Value);
+        var cartItem = cart.CartItems.SingleOrDefault(t => t.ProductId == productId);
+        if (cartItem is not null)
+        {
+            cartItem.Quantity += quantity;
+        }
+        else
+        {
+            cart.CartItems.Add(new CartItem
+            {
+                Quantity = quantity,
+                CartId = cart.Id,
+                ProductId = productId
+            });
+        }
+        _unitOfWork.SaveChanges();
+
+        return Result<bool>.Success(true, Messages.Cart.ProductAdded);
+    }
+
+    public Result<CartDto> CreateCartForCurrentCustomer(int customerId)
+    {
+        var cart = new Cart
+        {
+            CustomerId = customerId,
+            CartItems = new List<CartItem>()
+        };
+        _unitOfWork.CartRepo.Add(cart);
+        _unitOfWork.SaveChanges();
+        var cartDto = ObjectMapper.Mapper.Map<CartDto>(cart);
+        return Result<CartDto>.Success(cartDto);
+    }
+
+    public Result<CartDto> GetCartForCurrentCustomer(int customerId)
+    {
+        var cart = _unitOfWork.CartRepo.GetAll().SingleOrDefault(t => t.CustomerId == customerId);
+        var cartDto = ObjectMapper.Mapper.Map<CartDto>(cart);
+        return Result<CartDto>.Success(cartDto);
+    }
+
+    public Result<CartDto> GetOrCreateCartForCurrentCustomer(int customerId)
+    {
+        var cart = GetCartForCurrentCustomer(customerId);
+        if (cart is null)
+        {
+            cart = CreateCartForCurrentCustomer(customerId);
+        }
+
+        return cart;
     }
 }

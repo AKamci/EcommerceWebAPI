@@ -3,10 +3,10 @@ using Ecommerce.API.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Ecommerce.API.Controllers;
+namespace Ecommerce.API.Controllers.Admin;
 
-
-[Route("api/[controller]")]
+[Authorize]
+[Route("api/admin/[controller]")]
 [ApiController]
 public class CategoriesController(ICategoryService categoryService) : ControllerBase
 {

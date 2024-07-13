@@ -3,47 +3,47 @@ using Ecommerce.API.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Ecommerce.API.Controllers;
+namespace Ecommerce.API.Controllers.User;
 
 [Authorize]
 [Route("api/[controller]")]
 [ApiController]
-public class CartsController(ICartService cartService) : ControllerBase
+public class CustomersController(ICustomerService userService) : ControllerBase
 {
     [HttpGet]
     [Route("{id:int}")]
     public IActionResult GetById(int id)
     {
-        var result = cartService.GetById(id);
+        var result = userService.GetById(id);
         return result.IsSuccess ? Ok(result) : NotFound();
     }
 
     [HttpGet]
     public IActionResult GetAll()
     {
-        var result = cartService.GetAll();
+        var result = userService.GetAll();
         return Ok(result);
     }
 
     [HttpPost]
-    public IActionResult Add(CartDto cart)
+    public IActionResult Add(CustomerDto user)
     {
-        var result = cartService.Add(cart);
+        var result = userService.Add(user);
         return Ok(result);
     }
 
     [HttpPut]
-    public IActionResult Update(CartDto cart)
+    public IActionResult Update(CustomerDto user)
     {
-        var result = cartService.Update(cart);
+        var result = userService.Update(user);
         return Ok(result);
     }
 
     [HttpDelete]
     public IActionResult Delete(int id)
     {
-        var entity = cartService.GetById(id);
-        var result = cartService.Delete(entity.Value.Id);
+        var entity = userService.GetById(id);
+        var result = userService.Delete(entity.Value.Id);
         return result.IsSuccess ? Ok(result) : NotFound();
     }
 }

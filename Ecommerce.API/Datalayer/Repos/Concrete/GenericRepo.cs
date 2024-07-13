@@ -8,7 +8,7 @@ namespace Ecommerce.API.Datalayer.Repos.Concrete;
 
 public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity: Entity
 {
-    private readonly EcommerceContext _context;
+    protected readonly EcommerceContext _context;
     private readonly DbSet<TEntity> _dbSet;
 
     public GenericRepo(EcommerceContext context)
@@ -17,13 +17,13 @@ public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity: Entity
         _dbSet = _context.Set<TEntity>();
     }
 
-    public TEntity Add(TEntity product)
+    public virtual TEntity Add(TEntity product)
     {
         _dbSet.Add(product);
         return product;
     }
 
-    public void Delete(int id)
+    public virtual void Delete(int id)
     {
         var entity = GetById(id);
         if(entity != null)
@@ -32,7 +32,7 @@ public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity: Entity
         }
     }
 
-    public List<TEntity> GetAll()
+    public virtual List<TEntity> GetAll()
     {
         return _dbSet.ToList();
     }
@@ -48,12 +48,12 @@ public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity: Entity
         return entity;
     }
 
-    public void Update(TEntity product)
+    public virtual void Update(TEntity product)
     {
         _dbSet.Update(product);
     }
 
-    public IQueryable<TEntity> Filter(Expression<Func<TEntity, bool>> predicate)
+    public virtual IQueryable<TEntity> Filter(Expression<Func<TEntity, bool>> predicate)
     {
         return _dbSet.Where(predicate);
     }

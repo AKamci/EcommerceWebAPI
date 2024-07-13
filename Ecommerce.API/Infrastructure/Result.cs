@@ -19,6 +19,8 @@
 
         public static Result<T> Success(T value, string message) => new(value,true, message);
 
+        public static Result<T> Success(T value) => new(value, true, default);
+
         public static Result<T> Failure(string message) => new(default, false, message);
     }
 }
