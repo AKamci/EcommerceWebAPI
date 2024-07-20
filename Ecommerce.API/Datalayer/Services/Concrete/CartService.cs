@@ -63,44 +63,29 @@ public class CartService : ICartService
         return result is null ? Result<bool>.Success(true, Messages.Cart.Deleted) : Result<bool>.Failure(Messages.Cart.NotFound);
     }
 
-    public Result<bool> AddSingleProduct(int customerId, int productId, int quantity)
-    {
-        var context = _unitOfWork._context;
-        
-        var cartDto = GetOrCreateCartForCurrentCustomer(customerId);
-        var cart = ObjectMapper.Mapper.Map<Cart>(cartDto.Value);
-        var cartEntry = context.Entry(cart);
-        context.Entry(cart).State = EntityState.Unchanged;
-
-        var cartInclude = _unitOfWork.CartRepo.GetAllQuery().AsNoTracking().ToList().FirstOrDefault(x => x.CustomerId == customerId);
-        var cartItem = cartInclude.CartItems.FirstOrDefault(x => x.ProductId == productId);
-       
-        
-        
-        context.Entry(cartItem).State = EntityState.Unchanged;
-
-        if (cartItem is not null)
-        {
-            cartItem.Quantity += quantity;
-        }
-        else
-        {
-
-            cart.CartItems.Add(new CartItem
+    public Result<bool> AddProduct(int customerId, int productId, int quantity)
+    {        
+        var cart = GetOrCreateCartForCurrentCustomer(customerId);
+        var product = cart.Value.CartItems.FirstOrDefault(x => x.ProductId == productId);
+        if (product is null) {
+            cart.Value.CartItems.Add(new CartItem
             {
+                ProductId = productId,
                 Quantity = quantity,
-                CartId = cart.Id,
-                ProductId = productId
+                CartId = cart.Value.Id
             });
-            
-        }       
+        } else
+        {
+            product.Quantity += quantity;
+        }
+               
         
         _unitOfWork.SaveChanges();
 
         return Result<bool>.Success(true, Messages.Cart.ProductAdded);
     }
 
-    public Result<CartDto> CreateCartForCurrentCustomer(int customerId)
+    public Result<Cart> CreateCartForCurrentCustomer(int customerId)
     {
         var cart = new Cart
         {
@@ -109,21 +94,17 @@ public class CartService : ICartService
         };
         _unitOfWork.CartRepo.Add(cart);
         _unitOfWork.SaveChanges();
-        var cartDto = ObjectMapper.Mapper.Map<CartDto>(cart);
-        return Result<CartDto>.Success(cartDto);
+        return Result<Cart>.Success(cart);
     }
 
-    public Result<CartDto> GetCartForCurrentCustomer(int customerId)
+    public Result<Cart> GetCartForCurrentCustomer(int customerId)
     {
 
-        var cart = _unitOfWork.CartRepo.GetAllQuery().AsNoTracking()
-            
-            .SingleOrDefault(t => t.CustomerId == customerId);
-        var cartDto = ObjectMapper.Mapper.Map<CartDto>(cart);
-        return Result<CartDto>.Success(cartDto);
+        var cart = _unitOfWork.CartRepo.GetAll().SingleOrDefault(t => t.CustomerId == customerId);
+        return Result<Cart>.Success(cart);
     }
 
-    public Result<CartDto> GetOrCreateCartForCurrentCustomer(int customerId)
+    public Result<Cart> GetOrCreateCartForCurrentCustomer(int customerId)
     {
         var cart = GetCartForCurrentCustomer(customerId).Value;
         if (cart is null)
@@ -131,6 +112,33 @@ public class CartService : ICartService
            cart = CreateCartForCurrentCustomer(customerId).Value;
         }
 
-        return Result<CartDto>.Success(cart);
+        return Result<Cart>.Success(cart);
+    }
+
+    public Result<bool> RemoveProduct(int customerId, int productId)
+    {
+        var cart = GetOrCreateCartForCurrentCustomer(customerId);
+        var product = cart.Value.CartItems.FirstOrDefault(x => x.ProductId == productId);
+        if (product is not null)
+        {
+            cart.Value.CartItems.Remove(product);
+        }
+
+        _unitOfWork.SaveChanges();
+
+        return Result<bool>.Success(true, Messages.Cart.ProductRemoved);
+    }
+
+    public Result<bool> UpdateProduct(int customerId, int productId, int quantity)
+    {
+        var cart = GetOrCreateCartForCurrentCustomer(customerId);
+        var product = cart.Value.CartItems.FirstOrDefault(x => x.ProductId == productId);
+        if (product is not null) {
+            product.Quantity = quantity;
+        }
+
+        _unitOfWork.SaveChanges();
+
+        return Result<bool>.Success(true, Messages.Cart.ProductRemoved);
     }
 }

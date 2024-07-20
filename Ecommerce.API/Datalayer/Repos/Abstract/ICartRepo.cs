@@ -4,6 +4,5 @@ namespace Ecommerce.API.Datalayer.Repos.Abstract
 {
     public interface ICartRepo : IGenericRepo<Cart>
     {
-        IQueryable<Cart> GetAllQuery();
     }
 }
