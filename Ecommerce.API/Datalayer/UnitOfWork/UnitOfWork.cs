@@ -13,7 +13,7 @@ public class UnitOfWork : IDisposable
     private ICustomerRepo _userRepo;
 
     // Step 2: Add DbContext referance
-    private readonly EcommerceContext _context;
+    public readonly EcommerceContext _context;
 
     public UnitOfWork(ICartRepo cartRepo, ICategoryRepo categoryRepo, IOrderRepo orderRepo, IProductRepo productRepo, ICustomerRepo userRepo, EcommerceContext context)
     {

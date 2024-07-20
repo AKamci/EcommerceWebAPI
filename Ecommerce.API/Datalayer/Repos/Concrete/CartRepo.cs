@@ -14,5 +14,21 @@ public class CartRepo : GenericRepo<Cart>, ICartRepo
     public override List<Cart> GetAll()
     {
         return _context.Carts.Include(i => i.CartItems).ThenInclude(t => t.Product).ToList();
+
     }
+
+    public IQueryable<Cart> GetAllQuery()
+    {
+        return _context.Carts
+            .Include(i => i.CartItems)
+            .ThenInclude(t => t.Product)
+            .AsQueryable();
+    }
+
+    public  List<Cart> GetAllCartItems()
+    {
+        return _context.Carts.Include(i => i.CartItems).ToList();
+
+    }
+
 }

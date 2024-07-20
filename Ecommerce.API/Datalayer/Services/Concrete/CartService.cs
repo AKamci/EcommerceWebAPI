@@ -3,6 +3,7 @@ using Ecommerce.API.Datalayer.Services.Mapping;
 using Ecommerce.API.Dtos;
 using Ecommerce.API.Infrastructure;
 using Ecommerce.API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.API.Datalayer.Services.Concrete;
 
@@ -64,22 +65,44 @@ public class CartService : ICartService
 
     public Result<bool> AddSingleProduct(int customerId, int productId, int quantity)
     {
+        var context = _unitOfWork._context;
+        Random random = new Random();
+        
         var cartDto = GetOrCreateCartForCurrentCustomer(customerId);
         var cart = ObjectMapper.Mapper.Map<Cart>(cartDto.Value);
-        var cartItem = cart.CartItems.SingleOrDefault(t => t.ProductId == productId);
+        var cartEntry = context.Entry(cart);
+        Console.WriteLine($"Cart State: {cartEntry.State}");
+        context.Entry(cart).State = EntityState.Unchanged;
+
+        //var cartItem = cart.CartItems.SingleOrDefault(t => t.ProductId == productId);
+        //var cartItem = cart.CartItems.FirstOrDefault(x => x.ProductId == productId);
+
+        var cartInclude = _unitOfWork.CartRepo.GetAllQuery().AsNoTracking().ToList().FirstOrDefault(x => x.CustomerId == customerId);
+        var cartItem = cartInclude.CartItems.FirstOrDefault(x => x.ProductId == productId);
+       
+        
+        
+        context.Entry(cartItem).State = EntityState.Unchanged;
+
         if (cartItem is not null)
         {
             cartItem.Quantity += quantity;
+            var cartItemEntry = context.Entry(cartItem);
+            Console.WriteLine($"Cart State: {cartItemEntry.State}");
         }
         else
         {
+
             cart.CartItems.Add(new CartItem
             {
+                //Id = random.Next(1, 30),
                 Quantity = quantity,
                 CartId = cart.Id,
                 ProductId = productId
             });
-        }
+            
+        }       
+        
         _unitOfWork.SaveChanges();
 
         return Result<bool>.Success(true, Messages.Cart.ProductAdded);
@@ -100,19 +123,28 @@ public class CartService : ICartService
 
     public Result<CartDto> GetCartForCurrentCustomer(int customerId)
     {
-        var cart = _unitOfWork.CartRepo.GetAll().SingleOrDefault(t => t.CustomerId == customerId);
+
+        var cart = _unitOfWork.CartRepo.GetAllQuery().AsNoTracking()
+            
+            .SingleOrDefault(t => t.CustomerId == customerId);
+       
+
+        var context = _unitOfWork._context;
+        var cartEntry = context.Entry(cart);
+        Console.WriteLine($"Cart State: {cartEntry.State}");
+
         var cartDto = ObjectMapper.Mapper.Map<CartDto>(cart);
         return Result<CartDto>.Success(cartDto);
     }
 
     public Result<CartDto> GetOrCreateCartForCurrentCustomer(int customerId)
     {
-        var cart = GetCartForCurrentCustomer(customerId);
+        var cart = GetCartForCurrentCustomer(customerId).Value;
         if (cart is null)
         {
-            cart = CreateCartForCurrentCustomer(customerId);
+           cart = CreateCartForCurrentCustomer(customerId).Value;
         }
 
-        return cart;
+        return Result<CartDto>.Success(cart);
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.API.Controllers.Admin;
 
-[Authorize]
+//[Authorize]
 [Route("api/admin/[controller]")]
 [ApiController]
 public class CartsController(ICartService cartService) : ControllerBase
