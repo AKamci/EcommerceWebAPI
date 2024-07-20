@@ -25,10 +25,4 @@ public class CartRepo : GenericRepo<Cart>, ICartRepo
             .AsQueryable();
     }
 
-    public  List<Cart> GetAllCartItems()
-    {
-        return _context.Carts.Include(i => i.CartItems).ToList();
-
-    }
-
 }

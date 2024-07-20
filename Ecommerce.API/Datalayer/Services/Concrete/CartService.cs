@@ -66,16 +66,11 @@ public class CartService : ICartService
     public Result<bool> AddSingleProduct(int customerId, int productId, int quantity)
     {
         var context = _unitOfWork._context;
-        Random random = new Random();
         
         var cartDto = GetOrCreateCartForCurrentCustomer(customerId);
         var cart = ObjectMapper.Mapper.Map<Cart>(cartDto.Value);
         var cartEntry = context.Entry(cart);
-        Console.WriteLine($"Cart State: {cartEntry.State}");
         context.Entry(cart).State = EntityState.Unchanged;
-
-        //var cartItem = cart.CartItems.SingleOrDefault(t => t.ProductId == productId);
-        //var cartItem = cart.CartItems.FirstOrDefault(x => x.ProductId == productId);
 
         var cartInclude = _unitOfWork.CartRepo.GetAllQuery().AsNoTracking().ToList().FirstOrDefault(x => x.CustomerId == customerId);
         var cartItem = cartInclude.CartItems.FirstOrDefault(x => x.ProductId == productId);
@@ -87,15 +82,12 @@ public class CartService : ICartService
         if (cartItem is not null)
         {
             cartItem.Quantity += quantity;
-            var cartItemEntry = context.Entry(cartItem);
-            Console.WriteLine($"Cart State: {cartItemEntry.State}");
         }
         else
         {
 
             cart.CartItems.Add(new CartItem
             {
-                //Id = random.Next(1, 30),
                 Quantity = quantity,
                 CartId = cart.Id,
                 ProductId = productId
@@ -127,12 +119,6 @@ public class CartService : ICartService
         var cart = _unitOfWork.CartRepo.GetAllQuery().AsNoTracking()
             
             .SingleOrDefault(t => t.CustomerId == customerId);
-       
-
-        var context = _unitOfWork._context;
-        var cartEntry = context.Entry(cart);
-        Console.WriteLine($"Cart State: {cartEntry.State}");
-
         var cartDto = ObjectMapper.Mapper.Map<CartDto>(cart);
         return Result<CartDto>.Success(cartDto);
     }
