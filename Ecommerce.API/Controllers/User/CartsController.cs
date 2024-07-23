@@ -36,13 +36,4 @@ public class CartsController(ICartService cartService) : ControllerBase
         var result = cartService.RemoveProduct(22, productId);
         return Ok(result);
     }
-
-    [HttpGet]
-    public IActionResult GetCartOfCustomerWithCustomerId(int customerId)
-    {
-        var result = cartService.GetOrCreateCartForCurrentCustomer(customerId);
-        return Ok(result);
-    }
-
-
 }
