@@ -14,14 +14,5 @@
         public DateTime? UpdatedAt { get; set; }
 
 
-        public Entity()
-        {
-            CreatedAt = DateTime.UtcNow;
-        }
-
-        public void Update()
-        {
-            UpdatedAt = DateTime.UtcNow;
-        }
     }
 }
